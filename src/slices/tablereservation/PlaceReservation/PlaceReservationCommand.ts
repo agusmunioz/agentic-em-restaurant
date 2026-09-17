@@ -64,7 +64,11 @@ const toMinutes = (time: string): number => {
 const isInThePast = (day: string): boolean => {
     const startOfToday = new Date();
     startOfToday.setHours(0, 0, 0, 0);
-    return new Date(day) < startOfToday;
+
+    const [year, month, date] = day.split('-').map(Number);
+    const reservationDay = new Date(year, month - 1, date);
+
+    return reservationDay < startOfToday;
 };
 
 export const decide = (
