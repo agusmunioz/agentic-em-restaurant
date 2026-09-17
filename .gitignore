@@ -1,0 +1,5 @@
+.eventmodelers/
+.claude/settings.local.json
+.env
+node_modules/
+.build-kit/node_modules/
