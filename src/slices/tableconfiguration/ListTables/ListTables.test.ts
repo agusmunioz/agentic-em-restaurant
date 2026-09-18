@@ -61,4 +61,35 @@ describe('List Tables Specification', () => {
                 .then(assertReadModel);
         });
     });
+
+    it('spec: List Tables - removed table is delisted', async () => {
+        const assertReadModel: PostgreSQLProjectionAssert = async ({connectionString: connStr}) => {
+            const queryDb = knex({client: 'pg', connection: connStr});
+            try {
+                const result = await queryDb('tables')
+                    .withSchema('public')
+                    .where({table_id: TABLE_ID})
+                    .first();
+
+                assert.strictEqual(result, undefined, 'row should be deleted');
+            } finally {
+                await queryDb.destroy();
+            }
+        };
+
+        await given([
+            {
+                type: 'TableAdded',
+                data: {table_id: TABLE_ID, table_number: 1, seats: 4},
+                metadata: {stream_name: `table-configuration-${TABLE_ID}`},
+            },
+            {
+                type: 'TableRemoved',
+                data: {table_id: TABLE_ID},
+                metadata: {stream_name: `table-configuration-${TABLE_ID}`},
+            },
+        ])
+            .when([])
+            .then(assertReadModel);
+    });
 });
