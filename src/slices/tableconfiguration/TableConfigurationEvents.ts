@@ -17,4 +17,9 @@ export type TableRemoved = Event<'TableRemoved', {
     table_id: string;
 }, CommonMeta>;
 
-export type TableConfigurationEvents = TableAdded | TableRemoved;
+export type TableSeatsUpdated = Event<'TableSeatsUpdated', {
+    table_id: string;
+    seats: number;
+}, CommonMeta>;
+
+export type TableConfigurationEvents = TableAdded | TableRemoved | TableSeatsUpdated;
