@@ -1,7 +1,7 @@
 import {postgreSQLRawSQLProjection} from '@event-driven-io/emmett-postgresql';
 import {sql, SQL} from '@event-driven-io/dumbo';
 import knex, {Knex} from 'knex';
-import {type TableAdded, type TableRemoved} from '../TableConfigurationEvents';
+import {type TableAdded, type TableRemoved, type TableSeatsUpdated} from '../TableConfigurationEvents';
 
 export const tableName = 'tables';
 
@@ -13,15 +13,11 @@ export type TablesReadModel = {
 
 export const getKnexInstance = (): Knex => knex({client: 'pg'});
 
-// The "Tables" read model also depends on Table Seats Updated per the
-// board's dependency graph, but that event doesn't exist yet — the Update
-// Table Seats slice that emits it hasn't been built, so its data shape isn't
-// specified. Extend canHandle/evolve here once that slice defines it.
-type ListTablesEvents = TableAdded | TableRemoved;
+type ListTablesEvents = TableAdded | TableRemoved | TableSeatsUpdated;
 
 export const ListTablesProjection = postgreSQLRawSQLProjection<ListTablesEvents>({
     name: 'ListTablesProjection',
-    canHandle: ['TableAdded', 'TableRemoved'],
+    canHandle: ['TableAdded', 'TableRemoved', 'TableSeatsUpdated'],
     evolve: async (event): Promise<SQL[]> => {
         const db = getKnexInstance();
 
@@ -43,6 +39,13 @@ export const ListTablesProjection = postgreSQLRawSQLProjection<ListTablesEvents>
                     .withSchema('public')
                     .where({table_id: event.data.table_id})
                     .delete()
+                    .toQuery())];
+
+            case 'TableSeatsUpdated':
+                return [sql(db(tableName)
+                    .withSchema('public')
+                    .where({table_id: event.data.table_id})
+                    .update({seats: event.data.seats})
                     .toQuery())];
 
             default:

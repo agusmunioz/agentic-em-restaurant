@@ -92,4 +92,37 @@ describe('List Tables Specification', () => {
             .when([])
             .then(assertReadModel);
     });
+
+    it('spec: List Tables - updated seats are reflected', async () => {
+        const assertReadModel: PostgreSQLProjectionAssert = async ({connectionString: connStr}) => {
+            const queryDb = knex({client: 'pg', connection: connStr});
+            try {
+                const result = await queryDb('tables')
+                    .withSchema('public')
+                    .where({table_id: TABLE_ID})
+                    .first();
+
+                assert.ok(result, 'row should exist');
+                assert.strictEqual(result.table_number, 1);
+                assert.strictEqual(result.seats, 6);
+            } finally {
+                await queryDb.destroy();
+            }
+        };
+
+        await given([
+            {
+                type: 'TableAdded',
+                data: {table_id: TABLE_ID, table_number: 1, seats: 4},
+                metadata: {stream_name: `table-configuration-${TABLE_ID}`},
+            },
+            {
+                type: 'TableSeatsUpdated',
+                data: {table_id: TABLE_ID, seats: 6},
+                metadata: {stream_name: `table-configuration-${TABLE_ID}`},
+            },
+        ])
+            .when([])
+            .then(assertReadModel);
+    });
 });
