@@ -1,0 +1,54 @@
+{
+  "slices": [
+    {
+      "id": "4ad79e64-afa5-4a77-8e1e-07233294a7ea",
+      "slice": "Add Table",
+      "contextName": "Table Configuration",
+      "contextSlug": "table-configuration",
+      "folder": "addtable",
+      "status": "Done",
+      "definition": {
+        "id": "4ad79e64-afa5-4a77-8e1e-07233294a7ea",
+        "title": "Add Table",
+        "status": "Done",
+        "assignee": "__agent__",
+        "sliceType": "STATE_CHANGE",
+        "chapter": "Table Configuration",
+        "context": ""
+      }
+    },
+    {
+      "id": "3ead07e4-f73a-4595-9f83-bc37b178b580",
+      "slice": "List Tables",
+      "contextName": "Table Configuration",
+      "contextSlug": "table-configuration",
+      "folder": "listtables",
+      "status": "Done",
+      "definition": {
+        "id": "3ead07e4-f73a-4595-9f83-bc37b178b580",
+        "title": "List Tables",
+        "status": "Done",
+        "sliceType": "STATE_VIEW",
+        "chapter": "Table Configuration",
+        "context": ""
+      }
+    },
+    {
+      "id": "7bcb05b5-4a0c-4cc2-a15d-2d020df578eb",
+      "slice": "Remove Table",
+      "contextName": "Table Configuration",
+      "contextSlug": "table-configuration",
+      "folder": "removetable",
+      "status": "Done",
+      "definition": {
+        "id": "7bcb05b5-4a0c-4cc2-a15d-2d020df578eb",
+        "title": "Remove Table",
+        "status": "Done",
+        "assignee": "__agent__",
+        "sliceType": "STATE_CHANGE",
+        "chapter": "Table Configuration",
+        "context": ""
+      }
+    }
+  ]
+}

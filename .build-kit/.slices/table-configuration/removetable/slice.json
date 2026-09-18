@@ -1,0 +1,143 @@
+{
+  "id": "7bcb05b5-4a0c-4cc2-a15d-2d020df578eb",
+  "title": "Remove Table",
+  "status": "Planned",
+  "assignee": "__agent__",
+  "sliceType": "STATE_CHANGE",
+  "chapter": "Table Configuration",
+  "context": "",
+  "commands": [
+    {
+      "id": "b08b7f3e-b048-4a73-bc1d-4cfea1a6c46b",
+      "title": "Remove Table",
+      "type": "COMMAND",
+      "fields": [
+        { "name": "table_id", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": true, "type": "String", "cardinality": "Single", "subfields": [] }
+      ],
+      "dependencies": [
+        { "id": "b3659306-a9a2-45ca-9a83-1d0b9db7eaf0", "type": "INBOUND", "title": "Tables", "elementType": "HTML_SCREEN" },
+        { "id": "6938cd08-958d-4597-be64-1d7f3a84d4c6", "type": "OUTBOUND", "title": "Table Removed", "elementType": "EVENT" }
+      ],
+      "modelContext": "",
+      "lane": "Interaction",
+      "slice": "Remove Table",
+      "context": "INTERNAL",
+      "comments": []
+    }
+  ],
+  "events": [
+    {
+      "id": "6938cd08-958d-4597-be64-1d7f3a84d4c6",
+      "title": "Table Removed",
+      "type": "EVENT",
+      "fields": [
+        { "name": "table_id", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": true, "type": "String", "cardinality": "Single", "subfields": [] }
+      ],
+      "dependencies": [
+        { "id": "b08b7f3e-b048-4a73-bc1d-4cfea1a6c46b", "type": "INBOUND", "title": "Remove Table", "elementType": "COMMAND" },
+        { "id": "bc59eb13-c033-4686-98cd-5d76e03050fd", "type": "OUTBOUND", "title": "Tables", "elementType": "READMODEL" }
+      ],
+      "modelContext": "",
+      "lane": "Swimlane",
+      "slice": "Remove Table",
+      "context": "INTERNAL",
+      "comments": []
+    }
+  ],
+  "readmodels": [],
+  "screens": [
+    {
+      "id": "b3659306-a9a2-45ca-9a83-1d0b9db7eaf0",
+      "title": "Tables",
+      "type": "HTML_SCREEN",
+      "fields": [
+        { "name": "id", "optional": false, "type": "String", "idAttribute": true, "generated": true, "cardinality": "Single", "subfields": [] },
+        { "name": "table_number", "optional": false, "type": "Number", "cardinality": "Single", "subfields": [] },
+        { "name": "seats", "optional": false, "type": "Number", "cardinality": "Single", "subfields": [] }
+      ],
+      "dependencies": [
+        { "id": "bc59eb13-c033-4686-98cd-5d76e03050fd", "type": "INBOUND", "title": "Tables", "elementType": "READMODEL" }
+      ],
+      "modelContext": "",
+      "lane": "Admin",
+      "slice": "Remove Table",
+      "context": "INTERNAL",
+      "comments": []
+    }
+  ],
+  "processors": [],
+  "tables": [],
+  "specifications": [
+    {
+      "id": "e19d65f5-2b47-46d8-b3a5-7d5619fb7c56",
+      "title": "Remove table successfully",
+      "description": "An existing table is removed successfully",
+      "chapter": "Table Configuration",
+      "sliceName": "Remove Table",
+      "expectError": false,
+      "given": [
+        {
+          "id": "67622876-619c-4f6c-bcee-f87bdff8fe86",
+          "title": "Table Added",
+          "type": "EVENT",
+          "fields": [
+            { "name": "table_id", "example": "123-abc" },
+            { "name": "table_number", "example": "1" },
+            { "name": "seats", "example": "2" }
+          ]
+        }
+      ],
+      "when": [
+        {
+          "id": "b08b7f3e-b048-4a73-bc1d-4cfea1a6c46b",
+          "title": "Remove Table",
+          "type": "COMMAND",
+          "fields": [
+            { "name": "table_id", "example": "123-abc" }
+          ]
+        }
+      ],
+      "then": [
+        {
+          "id": "6938cd08-958d-4597-be64-1d7f3a84d4c6",
+          "title": "Table Removed",
+          "type": "EVENT",
+          "fields": [
+            { "name": "table_id", "example": "123-abc" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "2a3c03da-e4d3-43c6-8cbf-5256c4108274",
+      "title": "Remove non existing table fails",
+      "description": "Removing a table that was never added before is an error",
+      "chapter": "Table Configuration",
+      "sliceName": "Remove Table",
+      "expectError": true,
+      "errorDescription": "Unable to remove non existing table",
+      "given": [],
+      "when": [
+        {
+          "id": "b08b7f3e-b048-4a73-bc1d-4cfea1a6c46b",
+          "title": "Remove Table",
+          "type": "COMMAND",
+          "fields": [
+            { "name": "table_id", "example": "99999" }
+          ]
+        }
+      ],
+      "then": [
+        {
+          "type": "SPEC_ERROR",
+          "description": "Unable to remove non existing table"
+        }
+      ]
+    }
+  ],
+  "actors": [],
+  "aggregates": [],
+  "screenImages": [],
+  "comments": [],
+  "_note": "The 'Remove Table' SLICE_BORDER on the board only contains the Admin Tables screen; the actual COMMAND/EVENT/specifications live in an unlabeled adjacent board column and were fetched directly via get_node/scenario lookups, then assembled here."
+}

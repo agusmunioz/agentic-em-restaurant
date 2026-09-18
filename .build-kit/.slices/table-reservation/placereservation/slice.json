@@ -1,0 +1,340 @@
+{
+  "id": "bea2cc94-173f-41f2-8e77-f0dd673c5385",
+  "title": "Place Reservation",
+  "status": "Planned",
+  "assignee": "__agent__",
+  "sliceType": "STATE_CHANGE",
+  "chapter": "Table Reservation",
+  "context": "Table Reservation",
+  "commands": [
+    {
+      "id": "1bf1c79b-ab59-4706-a497-04cc22f09c8c",
+      "title": "Place Reservation",
+      "type": "COMMAND",
+      "fields": [
+        { "name": "email", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": false, "type": "String", "cardinality": "Single", "subfields": [] },
+        { "name": "day", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": false, "type": "Date", "cardinality": "Single", "subfields": [] },
+        { "name": "start_time", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": false, "type": "String", "cardinality": "Single", "subfields": [] },
+        { "name": "end_time", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": false, "type": "String", "cardinality": "Single", "subfields": [] },
+        { "name": "guests_number", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": false, "type": "Int", "cardinality": "Single", "subfields": [] }
+      ],
+      "dependencies": [
+        { "id": "fdf0f108-1877-4552-8fcd-ba3728631225", "type": "INBOUND", "title": "Place Reservation", "elementType": "HTML_SCREEN" },
+        { "id": "25720c7d-f4a7-4988-9d9f-6c5b4ca8a13b", "type": "OUTBOUND", "title": "Reservation Placed", "elementType": "EVENT" }
+      ],
+      "modelContext": "Table Reservation",
+      "lane": "Interaction",
+      "aggregate": "default",
+      "aggregateDependencies": [],
+      "triggers": [],
+      "tags": [],
+      "slice": "Place Reservation",
+      "description": "",
+      "context": "INTERNAL",
+      "elementContext": "INTERNAL",
+      "listElement": false,
+      "todoList": false,
+      "createsAggregate": false,
+      "elementCopy": false,
+      "sketched": false,
+      "comments": [
+        "If a guest double-clicks submit or resubmits the booking form, could they end up with two separate reservations for the same slot?",
+        "What happens when someone tries to book a table for a day and time that's already fully booked?",
+        "Do we check that the email address actually belongs to the person making the reservation, or could someone book using anyone else's email?"
+      ]
+    }
+  ],
+  "events": [
+    {
+      "id": "25720c7d-f4a7-4988-9d9f-6c5b4ca8a13b",
+      "title": "Reservation Placed",
+      "type": "EVENT",
+      "fields": [
+        { "name": "reservation_code", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": true, "edited": false, "idAttribute": true, "type": "String", "cardinality": "Single", "subfields": [] },
+        { "name": "email", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": false, "type": "String", "cardinality": "Single", "subfields": [] },
+        { "name": "day", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": false, "type": "Date", "cardinality": "Single", "subfields": [] },
+        { "name": "start_time", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": false, "type": "String", "cardinality": "Single", "subfields": [] },
+        { "name": "end_time", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": false, "type": "String", "cardinality": "Single", "subfields": [] },
+        { "name": "guests_number", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": false, "type": "Int", "cardinality": "Single", "subfields": [] }
+      ],
+      "dependencies": [
+        { "id": "1bf1c79b-ab59-4706-a497-04cc22f09c8c", "type": "INBOUND", "title": "Place Reservation", "elementType": "COMMAND" },
+        { "id": "cb4cdb3e-ab02-4d52-b09d-f38f9e1c544c", "type": "OUTBOUND", "title": "Active Reservations", "elementType": "READMODEL" },
+        { "id": "439819cd-256a-441b-aa94-347c47e76f8f", "type": "OUTBOUND", "title": "Reservations To Notify", "elementType": "READMODEL" },
+        { "id": "b669d5df-c9a8-4586-92d2-fe96dbb02335", "type": "OUTBOUND", "title": "Open Reservations", "elementType": "READMODEL" },
+        { "id": "32ef9e47-fa9e-4e58-95c1-8c5bd9068d9d", "type": "OUTBOUND", "title": "Confirmed Reservations", "elementType": "READMODEL" }
+      ],
+      "modelContext": "Table Reservation",
+      "lane": "Swimlane",
+      "aggregate": "default",
+      "aggregateDependencies": [],
+      "triggers": [],
+      "tags": [],
+      "slice": "Place Reservation",
+      "description": "",
+      "context": "INTERNAL",
+      "elementContext": "INTERNAL",
+      "listElement": false,
+      "todoList": false,
+      "createsAggregate": false,
+      "elementCopy": false,
+      "sketched": false,
+      "comments": []
+    }
+  ],
+  "readmodels": [],
+  "screens": [
+    {
+      "id": "fdf0f108-1877-4552-8fcd-ba3728631225",
+      "title": "Place Reservation",
+      "type": "HTML_SCREEN",
+      "fields": [
+        { "name": "email", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": false, "type": "String", "cardinality": "Single", "subfields": [] },
+        { "name": "day", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": false, "type": "Date", "cardinality": "Single", "subfields": [] },
+        { "name": "start_time", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": false, "type": "String", "cardinality": "Single", "subfields": [] },
+        { "name": "end_time", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": false, "type": "String", "cardinality": "Single", "subfields": [] },
+        { "name": "guests_number", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": false, "type": "Int", "cardinality": "Single", "subfields": [] }
+      ],
+      "dependencies": [
+        { "id": "1bf1c79b-ab59-4706-a497-04cc22f09c8c", "type": "OUTBOUND", "title": "Place Reservation", "elementType": "COMMAND" }
+      ],
+      "modelContext": "Table Reservation",
+      "lane": "Guest",
+      "aggregate": "default",
+      "aggregateDependencies": [],
+      "triggers": [],
+      "tags": [],
+      "slice": "Place Reservation",
+      "description": "",
+      "context": "INTERNAL",
+      "elementContext": "INTERNAL",
+      "listElement": false,
+      "todoList": false,
+      "createsAggregate": false,
+      "elementCopy": false,
+      "sketched": false,
+      "comments": []
+    }
+  ],
+  "processors": [],
+  "tables": [],
+  "specifications": [
+    {
+      "id": "8fa8da72-657d-4fc9-989f-23e377feb281",
+      "title": "Successfully place a reservation",
+      "chapter": "Table Reservation",
+      "sliceName": "Place Reservation",
+      "vertical": false,
+      "expectEmptyList": false,
+      "examples": [],
+      "given": [],
+      "when": [
+        {
+          "id": "1bf1c79b-ab59-4706-a497-04cc22f09c8c",
+          "title": "Place Reservation",
+          "tags": [],
+          "index": 0,
+          "specRow": 0,
+          "type": "COMMAND",
+          "fields": [
+            { "name": "email", "example": "hey@email.com" },
+            { "name": "day", "example": "20206-10-12" },
+            { "name": "start_time", "example": "11:00" },
+            { "name": "end_time", "example": "13:00" },
+            { "name": "guests_number", "example": "4" }
+          ],
+          "expectEmptyList": false
+        }
+      ],
+      "then": [
+        {
+          "id": "25720c7d-f4a7-4988-9d9f-6c5b4ca8a13b",
+          "title": "Reservation Placed",
+          "tags": [],
+          "index": 0,
+          "specRow": 0,
+          "type": "EVENT",
+          "fields": [
+            { "name": "reservation_code", "example": "12ZD3C" },
+            { "name": "email", "example": "hey@email.com" },
+            { "name": "day", "example": "20206-10-12" },
+            { "name": "start_time", "example": "11:00" },
+            { "name": "end_time", "example": "13:00" },
+            { "name": "guests_number", "example": "4" }
+          ],
+          "expectEmptyList": false
+        }
+      ]
+    },
+    {
+      "id": "9cc6daf8-68bc-4e83-aeeb-4ee61315586c",
+      "title": "Reservation in the past is not allowed",
+      "chapter": "Table Reservation",
+      "sliceName": "Place Reservation",
+      "vertical": false,
+      "expectEmptyList": false,
+      "examples": [],
+      "given": [],
+      "when": [
+        {
+          "id": "1bf1c79b-ab59-4706-a497-04cc22f09c8c",
+          "title": "Place Reservation",
+          "tags": [],
+          "index": 0,
+          "specRow": 0,
+          "type": "COMMAND",
+          "fields": [
+            { "name": "email", "example": "hey@email.com" },
+            { "name": "day", "example": "1988-10-12" },
+            { "name": "start_time", "example": "11:00" },
+            { "name": "end_time", "example": "13:00" },
+            { "name": "guests_number", "example": "4" }
+          ],
+          "expectEmptyList": false
+        }
+      ],
+      "then": [
+        {
+          "id": "f5acbadc-b1e7-485e-b4e6-6aa7496dbf6d",
+          "title": "Reservation in the past is not allowed",
+          "description": "A reservation in the past is not allowed",
+          "type": "SPEC_ERROR",
+          "fields": []
+        }
+      ]
+    },
+    {
+      "id": "8f84dc1c-2c61-47a3-bd3b-1efc419dfca6",
+      "title": "Start time must be before end time",
+      "chapter": "Table Reservation",
+      "sliceName": "Place Reservation",
+      "vertical": false,
+      "expectEmptyList": false,
+      "examples": [],
+      "given": [],
+      "when": [
+        {
+          "id": "1bf1c79b-ab59-4706-a497-04cc22f09c8c",
+          "title": "Place Reservation",
+          "tags": [],
+          "index": 0,
+          "specRow": 0,
+          "type": "COMMAND",
+          "fields": [
+            { "name": "email", "example": "hey@email.com" },
+            { "name": "day", "example": "20206-10-12" },
+            { "name": "start_time", "example": "22:00" },
+            { "name": "end_time", "example": "13:00" },
+            { "name": "guests_number", "example": "4" }
+          ],
+          "expectEmptyList": false
+        }
+      ],
+      "then": [
+        {
+          "id": "3c3a802b-9de9-42d8-96fa-6cc43a15e8ef",
+          "title": "Start time must be before end time",
+          "description": "Start time cannot be after end time",
+          "type": "SPEC_ERROR",
+          "fields": []
+        }
+      ]
+    },
+    {
+      "id": "505ecc65-257b-43ed-a5a1-5481a1948d72",
+      "title": "Reservation cannot overlap",
+      "chapter": "Table Reservation",
+      "sliceName": "Place Reservation",
+      "vertical": false,
+      "expectEmptyList": false,
+      "examples": [],
+      "given": [
+        {
+          "id": "25720c7d-f4a7-4988-9d9f-6c5b4ca8a13b",
+          "title": "Reservation Placed",
+          "tags": [],
+          "index": 0,
+          "specRow": 0,
+          "type": "EVENT",
+          "fields": [
+            { "name": "reservation_code", "example": "12ZD3C" },
+            { "name": "email", "example": "hey@email.com" },
+            { "name": "day", "example": "20206-10-12" },
+            { "name": "start_time", "example": "11:00" },
+            { "name": "end_time", "example": "13:00" },
+            { "name": "guests_number", "example": "4" }
+          ],
+          "expectEmptyList": false
+        }
+      ],
+      "when": [
+        {
+          "id": "1bf1c79b-ab59-4706-a497-04cc22f09c8c",
+          "title": "Place Reservation",
+          "tags": [],
+          "index": 0,
+          "specRow": 0,
+          "type": "COMMAND",
+          "fields": [
+            { "name": "email", "example": "hey@email.com" },
+            { "name": "day", "example": "20206-10-12" },
+            { "name": "start_time", "example": "11:30" },
+            { "name": "end_time", "example": "14:00" },
+            { "name": "guests_number", "example": "4" }
+          ],
+          "expectEmptyList": false
+        }
+      ],
+      "then": [
+        {
+          "id": "ab495be1-abe0-45ba-99a4-810309bef739",
+          "title": "Reservation cannot overlap",
+          "description": "Table is already reserved at the moment",
+          "type": "SPEC_ERROR",
+          "fields": []
+        }
+      ]
+    },
+    {
+      "id": "ef6cffe5-b73d-4ad1-886d-5366e7b1a2c3",
+      "title": "Guest number must be positive",
+      "chapter": "Table Reservation",
+      "sliceName": "Place Reservation",
+      "vertical": false,
+      "expectEmptyList": false,
+      "examples": [],
+      "given": [],
+      "when": [
+        {
+          "id": "1bf1c79b-ab59-4706-a497-04cc22f09c8c",
+          "title": "Place Reservation",
+          "tags": [],
+          "index": 0,
+          "specRow": 0,
+          "type": "COMMAND",
+          "fields": [
+            { "name": "email", "example": "hey@email.com" },
+            { "name": "day", "example": "20206-10-12" },
+            { "name": "start_time", "example": "11:00" },
+            { "name": "end_time", "example": "13:00" },
+            { "name": "guests_number", "example": "0" }
+          ],
+          "expectEmptyList": false
+        }
+      ],
+      "then": [
+        {
+          "id": "a3c7ffbb-9866-4439-b77d-4a2217ad7050",
+          "title": "Guest number must be positive",
+          "description": "Guest number must be positive",
+          "type": "SPEC_ERROR",
+          "fields": []
+        }
+      ]
+    }
+  ],
+  "actors": [],
+  "aggregates": [],
+  "screenImages": [],
+  "comments": []
+}

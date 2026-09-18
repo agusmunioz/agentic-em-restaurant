@@ -1,0 +1,135 @@
+{
+  "id": "3ead07e4-f73a-4595-9f83-bc37b178b580",
+  "title": "List Tables",
+  "status": "Created",
+  "sliceType": "STATE_VIEW",
+  "chapter": "Table Configuration",
+  "context": "",
+  "commands": [],
+  "events": [],
+  "readmodels": [
+    {
+      "id": "bc59eb13-c033-4686-98cd-5d76e03050fd",
+      "title": "Tables",
+      "type": "READMODEL",
+      "fields": [
+        { "name": "table_id", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": true, "type": "String", "cardinality": "Single", "subfields": [] },
+        { "name": "table_number", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": false, "type": "Number", "cardinality": "Single", "subfields": [] },
+        { "name": "seats", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": false, "type": "Number", "cardinality": "Single", "subfields": [] }
+      ],
+      "dependencies": [
+        { "id": "67622876-619c-4f6c-bcee-f87bdff8fe86", "type": "INBOUND", "title": "Table Added", "elementType": "EVENT" },
+        { "id": "c6682f4c-4e9c-44da-9d0e-32a808162121", "type": "OUTBOUND", "title": "Tables", "elementType": "HTML_SCREEN" },
+        { "id": "b3659306-a9a2-45ca-9a83-1d0b9db7eaf0", "type": "OUTBOUND", "title": "Tables", "elementType": "HTML_SCREEN" },
+        { "id": "6938cd08-958d-4597-be64-1d7f3a84d4c6", "type": "INBOUND", "title": "Table Removed", "elementType": "EVENT" },
+        { "id": "de234afb-da30-457f-bcc6-327fc6aeceae", "type": "OUTBOUND", "title": "Tables", "elementType": "HTML_SCREEN" },
+        { "id": "3fda7773-ce8d-4442-8ce6-9b0c37ae0f41", "type": "INBOUND", "title": "Table Seats Updated", "elementType": "EVENT" }
+      ],
+      "modelContext": "",
+      "lane": "Interaction",
+      "aggregate": "default",
+      "aggregateDependencies": [],
+      "triggers": [],
+      "tags": [],
+      "slice": "List Tables",
+      "description": "",
+      "context": "INTERNAL",
+      "elementContext": "INTERNAL",
+      "listElement": true,
+      "todoList": false,
+      "createsAggregate": false,
+      "elementCopy": false,
+      "sketched": false,
+      "comments": []
+    }
+  ],
+  "screens": [
+    {
+      "id": "c6682f4c-4e9c-44da-9d0e-32a808162121",
+      "title": "Tables",
+      "type": "HTML_SCREEN",
+      "fields": [
+        { "name": "table_id", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": true, "type": "String", "cardinality": "Single", "subfields": [] },
+        { "name": "table_number", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": false, "type": "Number", "cardinality": "Single", "subfields": [] },
+        { "name": "seats", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": false, "type": "Number", "cardinality": "Single", "subfields": [] }
+      ],
+      "dependencies": [
+        { "id": "bc59eb13-c033-4686-98cd-5d76e03050fd", "type": "INBOUND", "title": "Tables", "elementType": "READMODEL" },
+        { "id": "b08b7f3e-b048-4a73-bc1d-4cfea1a6c46b", "type": "OUTBOUND", "title": "Remove Table", "elementType": "COMMAND" }
+      ],
+      "modelContext": "",
+      "lane": "Admin",
+      "aggregate": "default",
+      "aggregateDependencies": [],
+      "triggers": [],
+      "tags": [],
+      "slice": "List Tables",
+      "description": "",
+      "context": "INTERNAL",
+      "elementContext": "INTERNAL",
+      "listElement": false,
+      "todoList": false,
+      "createsAggregate": false,
+      "elementCopy": false,
+      "sketched": false,
+      "comments": []
+    }
+  ],
+  "processors": [],
+  "tables": [],
+  "specifications": [],
+  "actors": [],
+  "aggregates": [],
+  "screenImages": [],
+  "comments": [],
+  "storylines": [
+    {
+      "id": "067ceb0a-9ebe-4da4-89e5-427a3734cfb6",
+      "title": "Added table is listed",
+      "elements": [
+        {
+          "id": "bc59eb13-c033-4686-98cd-5d76e03050fd",
+          "title": "Tables",
+          "tags": [],
+          "index": 0,
+          "specRow": 0,
+          "type": "READMODEL",
+          "fields": [
+            { "name": "table_id", "example": "123-1239-123" },
+            { "name": "table_number", "example": "1" },
+            { "name": "seats", "example": "4" }
+          ],
+          "expectEmptyList": false
+        },
+        {
+          "id": "67622876-619c-4f6c-bcee-f87bdff8fe86",
+          "title": "Table Added",
+          "tags": [],
+          "index": 0,
+          "specRow": 0,
+          "type": "EVENT",
+          "fields": [
+            { "name": "table_id", "example": "123-1239-123" },
+            { "name": "table_number", "example": "1" },
+            { "name": "seats", "example": "4" }
+          ],
+          "expectEmptyList": false
+        },
+        {
+          "id": "bc59eb13-c033-4686-98cd-5d76e03050fd",
+          "title": "Tables",
+          "tags": [],
+          "index": 0,
+          "specRow": 0,
+          "type": "READMODEL",
+          "fields": [
+            { "name": "table_id", "example": "123-1239-123" },
+            { "name": "table_number", "example": "1" },
+            { "name": "seats", "example": "4" }
+          ],
+          "expectEmptyList": true
+        }
+      ]
+    }
+  ]
+}
