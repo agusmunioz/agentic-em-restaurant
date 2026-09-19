@@ -6,15 +6,13 @@
       "contextName": "Table Reservation",
       "contextSlug": "table-reservation",
       "folder": "placereservation",
-      "status": "Done",
+      "status": "Created",
       "definition": {
         "id": "bea2cc94-173f-41f2-8e77-f0dd673c5385",
         "title": "Place Reservation",
-        "status": "Done",
-        "assignee": "__agent__",
+        "status": "Created",
         "sliceType": "STATE_CHANGE",
-        "chapter": "Table Reservation",
-        "context": "Table Reservation"
+        "contextName": "Table Reservation"
       }
     }
   ]

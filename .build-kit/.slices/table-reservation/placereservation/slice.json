@@ -1,7 +1,7 @@
 {
   "id": "bea2cc94-173f-41f2-8e77-f0dd673c5385",
   "title": "Place Reservation",
-  "status": "Planned",
+  "status": "Created",
   "assignee": "__agent__",
   "sliceType": "STATE_CHANGE",
   "chapter": "Table Reservation",
@@ -12,6 +12,8 @@
       "title": "Place Reservation",
       "type": "COMMAND",
       "fields": [
+        { "name": "reservation_id", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": true, "edited": false, "idAttribute": true, "type": "UUID", "cardinality": "Single", "subfields": [] },
+        { "name": "reservation_code", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": true, "edited": false, "idAttribute": false, "type": "String", "cardinality": "Single", "subfields": [] },
         { "name": "email", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": false, "type": "String", "cardinality": "Single", "subfields": [] },
         { "name": "day", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": false, "type": "Date", "cardinality": "Single", "subfields": [] },
         { "name": "start_time", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": false, "type": "String", "cardinality": "Single", "subfields": [] },
@@ -50,7 +52,8 @@
       "title": "Reservation Placed",
       "type": "EVENT",
       "fields": [
-        { "name": "reservation_code", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": true, "edited": false, "idAttribute": true, "type": "String", "cardinality": "Single", "subfields": [] },
+        { "name": "reservation_id", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": true, "edited": false, "idAttribute": true, "type": "UUID", "cardinality": "Single", "subfields": [] },
+        { "name": "reservation_code", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": true, "edited": false, "idAttribute": false, "type": "String", "cardinality": "Single", "subfields": [] },
         { "name": "email", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": false, "type": "String", "cardinality": "Single", "subfields": [] },
         { "name": "day", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": false, "type": "Date", "cardinality": "Single", "subfields": [] },
         { "name": "start_time", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": false, "type": "String", "cardinality": "Single", "subfields": [] },
@@ -59,9 +62,9 @@
       ],
       "dependencies": [
         { "id": "1bf1c79b-ab59-4706-a497-04cc22f09c8c", "type": "INBOUND", "title": "Place Reservation", "elementType": "COMMAND" },
-        { "id": "cb4cdb3e-ab02-4d52-b09d-f38f9e1c544c", "type": "OUTBOUND", "title": "Active Reservations", "elementType": "READMODEL" },
+        { "id": "cb4cdb3e-ab02-4d52-b09d-f38f9e1c544c", "type": "OUTBOUND", "title": "Guest Active Reservations", "elementType": "READMODEL" },
         { "id": "439819cd-256a-441b-aa94-347c47e76f8f", "type": "OUTBOUND", "title": "Reservations To Notify", "elementType": "READMODEL" },
-        { "id": "b669d5df-c9a8-4586-92d2-fe96dbb02335", "type": "OUTBOUND", "title": "Open Reservations", "elementType": "READMODEL" },
+        { "id": "b669d5df-c9a8-4586-92d2-fe96dbb02335", "type": "OUTBOUND", "title": "Open Reservations To Confirm", "elementType": "READMODEL" },
         { "id": "32ef9e47-fa9e-4e58-95c1-8c5bd9068d9d", "type": "OUTBOUND", "title": "Confirmed Reservations", "elementType": "READMODEL" }
       ],
       "modelContext": "Table Reservation",
@@ -195,7 +198,7 @@
       ],
       "then": [
         {
-          "id": "f5acbadc-b1e7-485e-b4e6-6aa7496dbf6d",
+          "id": "5c1bea9d-647d-4e7b-b32d-2ae6fd8c5d78",
           "title": "Reservation in the past is not allowed",
           "description": "A reservation in the past is not allowed",
           "type": "SPEC_ERROR",
@@ -232,7 +235,7 @@
       ],
       "then": [
         {
-          "id": "3c3a802b-9de9-42d8-96fa-6cc43a15e8ef",
+          "id": "d99067d9-bbfb-46b6-8292-5e12127e75c3",
           "title": "Start time must be before end time",
           "description": "Start time cannot be after end time",
           "type": "SPEC_ERROR",
@@ -287,7 +290,7 @@
       ],
       "then": [
         {
-          "id": "ab495be1-abe0-45ba-99a4-810309bef739",
+          "id": "26cc1861-b30f-48d6-bca6-e7fa3d47d388",
           "title": "Reservation cannot overlap",
           "description": "Table is already reserved at the moment",
           "type": "SPEC_ERROR",
@@ -324,7 +327,7 @@
       ],
       "then": [
         {
-          "id": "a3c7ffbb-9866-4439-b77d-4a2217ad7050",
+          "id": "463d12b6-083c-4ede-9b01-1b0ff4cf419e",
           "title": "Guest number must be positive",
           "description": "Guest number must be positive",
           "type": "SPEC_ERROR",
