@@ -17,4 +17,8 @@ export type ReservationPlaced = Event<'ReservationPlaced', {
     guests_number: number;
 }, CommonMeta>;
 
-export type TableReservationEvents = ReservationPlaced;
+export type ReservationCancelledByGuest = Event<'ReservationCancelledByGuest', {
+    reservation_id: string;
+}, CommonMeta>;
+
+export type TableReservationEvents = ReservationPlaced | ReservationCancelledByGuest;
