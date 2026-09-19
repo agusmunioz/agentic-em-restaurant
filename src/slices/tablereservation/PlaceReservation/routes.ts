@@ -83,7 +83,11 @@ export const api = (): WebApiSetup => (router: Router): void => {
             };
 
             const result = await handlePlaceReservation(command);
-            const reservationPlaced = result.newEvents[0];
+            const emittedEvent = result.newEvents[0];
+            if (emittedEvent.type !== 'ReservationPlaced') {
+                throw new Error(`Unexpected event type: ${emittedEvent.type}`);
+            }
+            const reservationPlaced = emittedEvent;
 
             if (correlationId) res.set('correlation_id', correlationId);
 
