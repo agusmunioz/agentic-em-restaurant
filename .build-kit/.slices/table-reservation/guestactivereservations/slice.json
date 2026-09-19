@@ -1,0 +1,165 @@
+{
+  "id": "e9ddbcd9-1c03-4001-a710-b2fbc659abb6",
+  "title": "Guest Active Reservations",
+  "status": "Created",
+  "assignee": "__agent__",
+  "sliceType": "STATE_VIEW",
+  "chapter": "Table Reservation",
+  "context": "Table Reservation",
+  "commands": [],
+  "events": [],
+  "readmodels": [
+    {
+      "id": "cb4cdb3e-ab02-4d52-b09d-f38f9e1c544c",
+      "title": "Guest Active Reservations",
+      "type": "READMODEL",
+      "fields": [
+        { "name": "reservation_id", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": true, "type": "UUID", "cardinality": "Single", "subfields": [] },
+        { "name": "reservation_code", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": false, "type": "String", "cardinality": "Single", "subfields": [] },
+        { "name": "day", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": false, "type": "Date", "cardinality": "Single", "subfields": [] },
+        { "name": "start_time", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": false, "type": "String", "cardinality": "Single", "subfields": [] },
+        { "name": "end_time", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": false, "type": "String", "cardinality": "Single", "subfields": [] },
+        { "name": "guests_number", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": false, "type": "Int", "cardinality": "Single", "subfields": [] },
+        { "name": "email", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": false, "type": "String", "cardinality": "Single", "subfields": [] }
+      ],
+      "dependencies": [
+        { "id": "66bd1691-8fce-4f42-8f88-0e14627791a3", "type": "OUTBOUND", "title": "Guest Active Reservations", "elementType": "HTML_SCREEN" },
+        { "id": "25720c7d-f4a7-4988-9d9f-6c5b4ca8a13b", "type": "INBOUND", "title": "Reservation Placed", "elementType": "EVENT" },
+        { "id": "c780044d-b6f9-4fbd-8c61-e480af0b9dff", "type": "INBOUND", "title": "Reservation Cancelled By Guest", "elementType": "EVENT" },
+        { "id": "7553d195-6990-4d81-a6bd-ad26496d4533", "type": "OUTBOUND", "title": "Reservations", "elementType": "HTML_SCREEN" }
+      ],
+      "modelContext": "Table Reservation",
+      "lane": "Interaction",
+      "aggregate": "default",
+      "aggregateDependencies": [],
+      "triggers": [],
+      "tags": [],
+      "slice": "Guest Active Reservations",
+      "description": "",
+      "context": "INTERNAL",
+      "elementContext": "INTERNAL",
+      "listElement": true,
+      "todoList": false,
+      "createsAggregate": false,
+      "elementCopy": false,
+      "sketched": false,
+      "comments": [
+        "When a reservation is cancelled, does it disappear from this list right away, or could a guest still see it listed as active?"
+      ]
+    }
+  ],
+  "screens": [
+    {
+      "id": "66bd1691-8fce-4f42-8f88-0e14627791a3",
+      "title": "Guest Active Reservations",
+      "type": "HTML_SCREEN",
+      "fields": [
+        { "name": "reservation_id", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": true, "type": "UUID", "cardinality": "Single", "subfields": [] },
+        { "name": "reservation_code", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": false, "type": "String", "cardinality": "Single", "subfields": [] },
+        { "name": "day", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": false, "type": "Date", "cardinality": "Single", "subfields": [] },
+        { "name": "start_time", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": false, "type": "String", "cardinality": "Single", "subfields": [] },
+        { "name": "end_time", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": false, "type": "String", "cardinality": "Single", "subfields": [] },
+        { "name": "guests_number", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": false, "type": "Int", "cardinality": "Single", "subfields": [] }
+      ],
+      "dependencies": [
+        { "id": "da52d7bc-fa3e-40b9-84a3-3ff06b1ebba3", "type": "OUTBOUND", "title": "Cancel Reservation", "elementType": "COMMAND" },
+        { "id": "cb4cdb3e-ab02-4d52-b09d-f38f9e1c544c", "type": "INBOUND", "title": "Guest Active Reservations", "elementType": "READMODEL" }
+      ],
+      "modelContext": "Table Reservation",
+      "lane": "Guest",
+      "aggregate": "default",
+      "aggregateDependencies": [],
+      "triggers": [],
+      "tags": [],
+      "slice": "Guest Active Reservations",
+      "description": "",
+      "context": "INTERNAL",
+      "elementContext": "INTERNAL",
+      "listElement": false,
+      "todoList": false,
+      "createsAggregate": false,
+      "elementCopy": false,
+      "sketched": false,
+      "comments": []
+    }
+  ],
+  "processors": [],
+  "tables": [],
+  "specifications": [
+    {
+      "id": "ac6116d5-9bdb-4e9f-b38a-c2e10e003d73",
+      "title": "Guest active reservations are listed",
+      "chapter": "Table Reservation",
+      "sliceName": "Guest Active Reservations",
+      "vertical": false,
+      "expectEmptyList": false,
+      "examples": [
+        { "day": "20206-10-12", "end_time": "13:00", "start_time": "11:00", "guests_number": "4", "reservation_code": "12ZD3C" },
+        { "day": "20206-11-30", "end_time": "23:00", "start_time": "22:00", "guests_number": "2", "reservation_code": "893AXX" }
+      ],
+      "given": [
+        {
+          "id": "25720c7d-f4a7-4988-9d9f-6c5b4ca8a13b",
+          "title": "Reservation Placed",
+          "tags": [],
+          "index": 0,
+          "specRow": 0,
+          "type": "EVENT",
+          "fields": [
+            { "name": "reservation_id" },
+            { "name": "reservation_code", "example": "12ZD3C" },
+            { "name": "email", "example": "hey@email.com" },
+            { "name": "day", "example": "20206-10-12" },
+            { "name": "start_time", "example": "11:00" },
+            { "name": "end_time", "example": "13:00" },
+            { "name": "guests_number", "example": "4" }
+          ],
+          "expectEmptyList": false
+        },
+        {
+          "id": "25720c7d-f4a7-4988-9d9f-6c5b4ca8a13b",
+          "title": "Reservation Placed",
+          "tags": [],
+          "index": 0,
+          "specRow": 0,
+          "type": "EVENT",
+          "fields": [
+            { "name": "reservation_id" },
+            { "name": "reservation_code", "example": "893AXX" },
+            { "name": "email", "example": "hey@email.com" },
+            { "name": "day", "example": "2026-11-30" },
+            { "name": "start_time", "example": "22:00" },
+            { "name": "end_time", "example": "23:00" },
+            { "name": "guests_number", "example": "2" }
+          ],
+          "expectEmptyList": false
+        }
+      ],
+      "when": [],
+      "then": [
+        {
+          "id": "cb4cdb3e-ab02-4d52-b09d-f38f9e1c544c",
+          "title": "Guest Active Reservations",
+          "tags": [],
+          "index": 0,
+          "specRow": 0,
+          "type": "READMODEL",
+          "fields": [
+            { "name": "reservation_id" },
+            { "name": "reservation_code", "example": "12ZD3C" },
+            { "name": "day", "example": "20206-10-12" },
+            { "name": "start_time", "example": "11:00" },
+            { "name": "end_time", "example": "13:00" },
+            { "name": "guests_number", "example": "4" },
+            { "name": "email" }
+          ],
+          "expectEmptyList": false
+        }
+      ]
+    }
+  ],
+  "actors": [],
+  "aggregates": [],
+  "screenImages": [],
+  "comments": []
+}

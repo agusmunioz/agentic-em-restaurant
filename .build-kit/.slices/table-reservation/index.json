@@ -14,6 +14,21 @@
         "sliceType": "STATE_CHANGE",
         "contextName": "Table Reservation"
       }
+    },
+    {
+      "id": "e9ddbcd9-1c03-4001-a710-b2fbc659abb6",
+      "slice": "Guest Active Reservations",
+      "contextName": "Table Reservation",
+      "contextSlug": "table-reservation",
+      "folder": "guestactivereservations",
+      "status": "Created",
+      "definition": {
+        "id": "e9ddbcd9-1c03-4001-a710-b2fbc659abb6",
+        "title": "Guest Active Reservations",
+        "status": "Created",
+        "sliceType": "STATE_VIEW",
+        "contextName": "Table Reservation"
+      }
     }
   ]
 }
