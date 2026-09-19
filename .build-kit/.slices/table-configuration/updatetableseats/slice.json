@@ -1,0 +1,172 @@
+{
+  "id": "bc538d68-88fe-4f68-afcc-87daf9f80c96",
+  "title": "Update Table Seats",
+  "status": "Created",
+  "assignee": "__agent__",
+  "sliceType": "STATE_CHANGE",
+  "chapter": "Table Configuration",
+  "context": "",
+  "commands": [
+    {
+      "id": "8ff2a838-8e83-4e94-b17e-9dbe7b36e79e",
+      "title": "Update Table Seats",
+      "type": "COMMAND",
+      "fields": [
+        { "name": "table_id", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": true, "type": "String", "cardinality": "Single", "subfields": [] },
+        { "name": "seats", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": false, "type": "Number", "cardinality": "Single", "subfields": [] }
+      ],
+      "dependencies": [
+        { "id": "e9a1dbdb-d73f-426d-bf17-01a8a3e1cb51", "type": "INBOUND", "title": "Table Seats", "elementType": "HTML_SCREEN" },
+        { "id": "3fda7773-ce8d-4442-8ce6-9b0c37ae0f41", "type": "OUTBOUND", "title": "Table Seats Updated", "elementType": "EVENT" }
+      ],
+      "modelContext": "",
+      "lane": "Interaction",
+      "aggregate": "default",
+      "aggregateDependencies": [],
+      "triggers": [],
+      "tags": [],
+      "slice": "Update Table Seats",
+      "description": "",
+      "context": "INTERNAL",
+      "elementContext": "INTERNAL",
+      "listElement": false,
+      "todoList": false,
+      "createsAggregate": false,
+      "elementCopy": false,
+      "sketched": false,
+      "comments": [
+        "The examples describe changing a table's number as well as its seat count, but this action only changes seats — should changing the table number be supported here too?"
+      ]
+    }
+  ],
+  "events": [
+    {
+      "id": "3fda7773-ce8d-4442-8ce6-9b0c37ae0f41",
+      "title": "Table Seats Updated",
+      "type": "EVENT",
+      "fields": [
+        { "name": "table_id", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": true, "type": "String", "cardinality": "Single", "subfields": [] },
+        { "name": "seats", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": false, "type": "Number", "cardinality": "Single", "subfields": [] }
+      ],
+      "dependencies": [
+        { "id": "8ff2a838-8e83-4e94-b17e-9dbe7b36e79e", "type": "INBOUND", "title": "Update Table Seats", "elementType": "COMMAND" },
+        { "id": "bc59eb13-c033-4686-98cd-5d76e03050fd", "type": "OUTBOUND", "title": "Tables", "elementType": "READMODEL" },
+        { "id": "3d542d76-389e-4163-9893-e38aa93a81b4", "type": "OUTBOUND", "title": "Tables for reservations", "elementType": "READMODEL" }
+      ],
+      "modelContext": "",
+      "lane": "Swimlane",
+      "aggregate": "default",
+      "aggregateDependencies": [],
+      "triggers": [],
+      "tags": [],
+      "slice": "Update Table Seats",
+      "description": "",
+      "context": "INTERNAL",
+      "elementContext": "INTERNAL",
+      "listElement": false,
+      "todoList": false,
+      "createsAggregate": false,
+      "elementCopy": false,
+      "sketched": false,
+      "comments": []
+    }
+  ],
+  "readmodels": [],
+  "screens": [
+    {
+      "id": "e9a1dbdb-d73f-426d-bf17-01a8a3e1cb51",
+      "title": "Table Seats",
+      "type": "HTML_SCREEN",
+      "fields": [
+        { "name": "table_id", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": true, "edited": false, "idAttribute": true, "type": "String", "cardinality": "Single", "subfields": [] },
+        { "name": "table_number", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": false, "type": "Number", "cardinality": "Single", "subfields": [] },
+        { "name": "seats", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": false, "type": "Number", "cardinality": "Single", "subfields": [] }
+      ],
+      "dependencies": [
+        { "id": "0ed5e121-ecf2-46ba-9db3-595ac638eb12", "type": "INBOUND", "title": "Table seat detail", "elementType": "READMODEL" },
+        { "id": "8ff2a838-8e83-4e94-b17e-9dbe7b36e79e", "type": "OUTBOUND", "title": "Update Table Seats", "elementType": "COMMAND" }
+      ],
+      "modelContext": "",
+      "lane": "Admin",
+      "aggregate": "default",
+      "aggregateDependencies": [],
+      "triggers": [],
+      "tags": [],
+      "slice": "Update Table Seats",
+      "description": "",
+      "context": "INTERNAL",
+      "elementContext": "INTERNAL",
+      "listElement": false,
+      "todoList": false,
+      "createsAggregate": false,
+      "elementCopy": false,
+      "sketched": false,
+      "comments": [
+        "The tables list shows an \"Update\" button on every row, but how does someone get from there to updating one specific table's seat count?"
+      ]
+    }
+  ],
+  "processors": [],
+  "tables": [],
+  "specifications": [
+    {
+      "id": "5d996c52-c19f-41cc-b53b-7ffae012782c",
+      "title": "Update table seat succesfully",
+      "chapter": "Table Configuration",
+      "sliceName": "Update Table Seats",
+      "vertical": false,
+      "expectEmptyList": false,
+      "examples": [],
+      "given": [
+        {
+          "id": "67622876-619c-4f6c-bcee-f87bdff8fe86",
+          "title": "Table Added",
+          "tags": [],
+          "index": 0,
+          "specRow": 0,
+          "type": "EVENT",
+          "fields": [
+            { "name": "table_id", "example": "123-abc" },
+            { "name": "table_number", "example": "1" },
+            { "name": "seats", "example": "4" }
+          ],
+          "expectEmptyList": false
+        }
+      ],
+      "when": [
+        {
+          "id": "8ff2a838-8e83-4e94-b17e-9dbe7b36e79e",
+          "title": "Update Table Seats",
+          "tags": [],
+          "index": 0,
+          "specRow": 0,
+          "type": "COMMAND",
+          "fields": [
+            { "name": "table_id", "example": "123-abc" },
+            { "name": "seats", "example": "6" }
+          ],
+          "expectEmptyList": false
+        }
+      ],
+      "then": [
+        {
+          "id": "3fda7773-ce8d-4442-8ce6-9b0c37ae0f41",
+          "title": "Table Seats Updated",
+          "tags": [],
+          "index": 0,
+          "specRow": 0,
+          "type": "EVENT",
+          "fields": [
+            { "name": "table_id", "example": "123-abc" },
+            { "name": "seats", "example": "6" }
+          ],
+          "expectEmptyList": false
+        }
+      ]
+    }
+  ],
+  "actors": [],
+  "aggregates": [],
+  "screenImages": [],
+  "comments": []
+}

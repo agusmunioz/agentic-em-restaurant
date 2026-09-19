@@ -48,6 +48,7 @@ Server name: `eventmodelers`. Every tool takes `boardId` explicitly; none need `
 | `get_slice_data` | `boardId`, `contextName?`, `contextId?`, `sliceId?` | Full element graph for slices in a context | §8 `GET /slicedata` |
 | `get_spec_info` | `boardId`, `timelineId`, `elementTypes?` | EVENT/COMMAND/READMODEL nodes valid in GWT steps. Pass `elementTypes` (subset of `EVENT`/`COMMAND`/`READMODEL`) to avoid pulling the full element list when only one or two types are needed — filtered server-side, not just after a full fetch | §6 `GET .../spec-info` |
 | `get_board_outline` | `boardId`, `chapterId` | One chapter's structure, compact: per-column node lists (`{id, type, title, lane}`) + a flat edge list, no HTML pages / field bodies / meta. The cheap "what is where and how is it wired" read — prefer over `get_nodes` (no projection) for orientation checks | — (MCP-only convenience) |
+| `get_connected_nodes` | `boardId`, `nodeId`, `chapterId?`, `direction?` (`inbound`/`outbound`/`both`), `depth?`, `types?`, `includeFields?` | Neighbours of **one** node — what feeds it and what it feeds. Answers from a single anchor, unlike `get_attribute_chain` (which needs both ends of the chain as cell names up front). `depth` follows a whole chain; `types` filters the result only, never the traversal. Each neighbour carries `via`: `"edge"` for a real connection, `"layout"` when the node has none in that direction and the neighbour was inferred from the grid using auto-connect's own window (own column + adjacent one, forward-only pairs). Real edges always win. The `layout` fallback is what makes hand-built/imported chapters — which routinely carry **zero** edges — readable instead of falsely empty | — (MCP-only convenience) |
 | `validate_model` | `boardId`, `chapterId`, `checks?[]` | Server-side Event Modeling structural checklist over one chapter — compact `findings` only. Checks: unplaced nodes, backward arrows (with the todo-list `EVENT→READMODEL` exception), zero/multi-issuer commands, sourceless read models, two-screens-in-a-column, missing scenarios. Replaces the manual per-type `get_nodes` + `get_node projection=edges` validation pass | — (MCP-only convenience) |
 | `add_scenario` | `boardId`, `timelineId`, `columnId`, `scenarios[]`, `compact?` | Append GWT scenario(s) to a column's spec node. `compact: true` returns `{specNodeId, added, scenarioCount, isNewNode}` instead of echoing every scenario back | §6 `POST .../scenarios` |
 | `add_storyline` | `boardId`, `timelineId`, `columnId`, `storylines[]`, `compact?` | Append storyline(s) (ordered, branchable beats over existing elements) to a column's spec node. Use whenever `eventmodeling-elaborating-scenarios`'s GWT-vs-storyline decision rule calls for one (e.g. a todo list's open→close lifecycle) — not only when a user explicitly names "storyline"; that skill's own per-read-model judgment is the trigger, this catalog entry isn't a stricter gate on top of it. `compact: true` suppresses the full storyline echo | §6 `POST .../storylines` |
@@ -817,12 +818,34 @@ Submit a prompt for a board timeline. Auth: Supabase JWT (`Authorization: Bearer
   node_id?: string
   comment_id?: string
   priority?: boolean          // default false
+  hidden?: boolean            // default false — agent-only task, never returned to a client
   context?: {                 // optional canvas-selection context for the agent to use
     selectedCell?: object | null
-    selectedNodes?: string[]
+    selectedNodes?: string[]  // every element selected when the prompt was sent
+    timelineId?: string | null
+    focusArea?: {             // what was on screen at submit time — orientation, not a task
+      nodes: { id: string, title?: string, type?: string }[]
+      truncated: boolean      // more were visible than the list holds (cap: 15)
+    }
   }
 }
 ```
+
+`context` is stored and handed back verbatim — the backend validates only the *shape* of
+`selectedCell`/`selectedNodes`/`timelineId` and passes everything else (`focusArea` included)
+through opaquely, so new context fields need no backend change.
+
+`focusArea.nodes` is ordered by how much each element says about where the user is, not by
+position alone: chapters first, then the model itself (`COMMAND`, `READMODEL`, `QUERY`,
+`EVENT`), then specs (`SCENARIO`, `SPEC_*`), then everything else (screens, notes, drawings,
+slice frames); within one of those tiers, nearest the centre of the view first. Every entry
+carries its `type`, so a chapter is told from a command without a second lookup.
+
+`hidden: true` marks an agent-only task: still claimed by `/prompts/next` like any other
+prompt, but excluded from every client read (and from Supabase's `prompts_select` RLS policy),
+so it never shows up in the user's prompt list. A canvas **poke** (Alt+Shift+P) is exactly
+this — a hidden prompt whose text is the bare word `Focus`, carrying `node_id` (when a single
+element was selected) plus the `focusArea`, and nothing else.
 
 **Response**: `201` — the created row, `status: "ADDED"`.
 **Errors**: `400` missing required fields or malformed `context` · `403` no access to board · `404` board/timeline not found or no API token configured for the org
@@ -833,7 +856,7 @@ Submit a prompt for a board timeline. Auth: Supabase JWT (`Authorization: Bearer
 Claim the next pending (`ADDED`) prompt for a board — atomically flips it to `CLAIMED` and returns it. This is what a running modeling agent's warm loop polls. Auth: `x-token` **and** a Supabase JWT (`Authorization: Bearer`) together.
 
 **Query params**: `board_id` (required)
-**Response**: `200` — the claimed row (now `status: "CLAIMED"`) · `404` — no `ADDED` prompts available
+**Response**: `200` — the claimed row (now `status: "CLAIMED"`), including its parsed `context` and the `hidden` flag · `404` — no `ADDED` prompts available
 
 ---
 

@@ -9,6 +9,8 @@ description: Resolve eventmodelers connection config (token, boardId, baseUrl) f
 
 **This should happen once per session, not once per skill.** If `TOKEN`/`BOARD_ID`/`ORG_ID`/`BASE_URL` are already resolved and verified from earlier in the current session — including earlier in the *same turn*, e.g. one skill internally invoking a second skill (`add-next-slice` → `html-screen`) — every subsequent "invoke `connect`" instruction is satisfied immediately by reusing those values. Do not re-run Steps 0–4 below. Only re-run this skill from scratch when a value actually needs to change: a fresh `401`/`403`/access-denied response from some other call, a different `board_id` on this turn, or a new inline param that overrides what's already resolved.
 
+**Subagents are a fresh session — hand them the resolved values.** When you spawn a subagent to do board work, put the already-resolved credentials inline in its prompt (`token=… board=… org=… baseUrl=…`). Its `connect` then satisfies everything at Step 0 and skips Steps 1–4 entirely: no config-file walk, no MCP re-registration, no verify call. Spawning three subagents without passing them down means paying the whole resolve-and-verify round three more times for values you already have.
+
 This skill also registers the **eventmodelers MCP server** for the project (Step 3.5) so other skills can call MCP tools (`mcp__eventmodelers__*`) instead of raw curl. MCP is the preferred transport; curl remains a fallback for hosts without MCP support, or for the one or two endpoints (documented in `learn-eventmodelers-api`) the MCP server doesn't expose.
 
 ---
@@ -49,6 +51,8 @@ Before reading the config file, scan the prompt/arguments that invoked this skil
 | `baseUrl=<url>` | `baseUrl=http://localhost:3000` |
 
 If an inline `board=<uuid>` is found, use it as `BOARD_ID` — **it takes priority over the config file**. Same for `token`, `org`, and `baseUrl`. Record which values came from inline params so they are not overwritten in Step 3.
+
+**All four inline means this skill is already finished — stop here.** `token=`, `board=`, `org=` and `baseUrl=` arriving together is the shape a parent agent hands a subagent, and it resolves every required value in this one step. Do not walk the config file (Step 1), do not ask anything (Step 2), do not persist (Step 3), and do not make the verify call (Step 4): the parent resolved these values against this board and verified them there, so a subagent verifying them again learns nothing it wasn't just told and pays a round trip for it. Step 3.5 is a no-op too whenever `.mcp.json` already carries an `eventmodelers` entry — read the file, don't rewrite it, and don't re-register a server the session is already connected to. Print `Connected — board <BOARD_ID>` and return to the skill that invoked you.
 
 ---
 
@@ -211,6 +215,45 @@ curl -s -o /dev/null -w "%{http_code}" \
 | `403` | Token organization does not match board. Tell the user to check that the token was issued for the correct workspace. Re-run from Step 2 for both fields. |
 | `404` | Board not found. Tell the user and re-run from Step 2, clearing `boardId`. |
 | Any other | Print the status code and raw response. Ask the user how to proceed. |
+
+---
+
+## Step 5 — Read the board once
+
+Connecting is also where the session's read discipline starts. Every skill that runs after this one shares the same board, so **fetch it once and index it in memory** instead of re-deriving it per step:
+
+- **Orientation** (what is where, how is it wired) — `get_board_outline { boardId, chapterId }`. One compact call per chapter: per-column node lists plus a flat edge list, no HTML pages or field bodies.
+- **Working set** (you need `meta.fields`, examples, descriptions) — `get_nodes { boardId, chapterId }`. One call returns every node in the chapter with full `meta`, plus `node.position` and `node.parentId`. A whole 70-node board is well under 100 KB unscoped; scoped to a chapter it is smaller still.
+- **A known, scattered subset** — `get_nodes { boardId, nodeIds: [...] }`. One call, not one per id.
+- **Just names/types** — add `projection: "line"` (carries `sliceStatus` too). **Just a chapter's grid** — `get_node { nodeId: <chapterId>, projection: "cells" }`. **Just one node's wiring** — `get_node { nodeId, projection: "edges" }`.
+
+**Orientation first, working set second — the two tiers are a sequence, not a choice.** "Where is the thing I was pointed at, and what sits around it" is an orientation question, and it is answered by `get_board_outline` or by `get_nodes` with `projection: "line"`. Answer it there, decide from it which nodes you are actually going to touch, and only then spend a full-`meta` read — `get_nodes` scoped by `chapterId`, or by `nodeIds` for a scattered handful — on those. Opening instead with an unscoped full-`meta` read drags every field body and every rendered HTML page on the board across the wire to work out which column someone poked at: the most expensive possible way to ask the cheapest question in the session.
+
+**Each tier is once per session, not once per step.** A chapter's outline and grid don't change unless you or a human changes them, so keep the indexed result and answer later questions from memory; re-read only after a structural write (a node created, moved or deleted), and then only the part that moved. Three `get_board_outline` calls inside one turn means the first two were fetched and thrown away.
+
+### The slice status comes with it
+
+That same read tells you what you may write to. `get_nodes` returns `sliceStatus` per node and `get_board_outline` returns it per column, so index it alongside everything else:
+
+**Only a slice in `Created` may be written to.** Any other status — `Planned`, `Assigned`, `InProgress`, `Review`, `Blocked`, `Done`, `Informational` — means someone is working on that slice: read its elements for context, but never change, move, rename or delete them, and never add scenarios, fields or examples to them. An element with **no** `sliceStatus` is in no slice at all, which is not the same as locked — that one is writable.
+
+Never spend a `list_slices`/`get_slice_data` call to answer this; the board read already did.
+
+`get_node` without a projection is for **one** node you did not already load — most often re-reading a node right after writing it. A step that issues it in a loop over nodes that were already in a list response is doing the same fetch N times; collapse it to the single chapter-scoped read above.
+
+The same discipline applies to writes: `submit_node_events` takes `events[]`, so a multi-node edit is **one** call carrying every event, not one call per node. Pass `compact: true` when you don't need the per-node hash map back.
+
+Where per-node calls genuinely can't be avoided, issue them together in one message so they run concurrently rather than in sequence.
+
+### Ids and timestamps
+
+Elements you create carry client-side ids, and every `node:created` event carries a timestamp. Mint them **once per turn, in a single call**, and take from that pool as you assemble the event array:
+
+```bash
+for i in $(seq 5); do uuidgen; done; echo $(( $(date +%s) * 1000 ))
+```
+
+Nothing in that depends on anything you're about to read, so splitting it across three shells is three round trips bought for nothing. Never reach for GNU-only `date` specifiers (`%N`, `%3N`) here: BSD/macOS `date` prints them literally instead of failing, so the malformed timestamp survives until something downstream rejects it.
 
 ---
 
