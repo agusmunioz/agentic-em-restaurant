@@ -20,7 +20,7 @@
         { "name": "start_time", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": false, "type": "String", "cardinality": "Single", "subfields": [] },
         { "name": "end_time", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": false, "type": "String", "cardinality": "Single", "subfields": [] },
         { "name": "guests_number", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": false, "type": "Int", "cardinality": "Single", "subfields": [] },
-        { "name": "email", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": false, "type": "String", "cardinality": "Single", "subfields": [] }
+        { "name": "email", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": true, "generated": false, "edited": false, "idAttribute": false, "type": "String", "cardinality": "Single", "subfields": [] }
       ],
       "dependencies": [
         { "id": "66bd1691-8fce-4f42-8f88-0e14627791a3", "type": "OUTBOUND", "title": "Guest Active Reservations", "elementType": "HTML_SCREEN" },
