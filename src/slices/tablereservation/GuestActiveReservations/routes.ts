@@ -19,6 +19,12 @@ export const api = (): WebApiSetup => (router: Router): void => {
      *         schema:
      *           type: string
      *         description: When set, returns the single row with this reservation_id instead of the full collection
+     *       - in: query
+     *         name: email
+     *         required: false
+     *         schema:
+     *           type: string
+     *         description: When set (and _id is not), returns only the reservations for this guest email
      *     responses:
      *       '200':
      *         description: The Guest Active Reservations read model
@@ -63,10 +69,13 @@ export const api = (): WebApiSetup => (router: Router): void => {
         try {
             const db = getKnexInstance();
             const id = req.query._id?.toString();
+            const email = req.query.email?.toString();
 
             const data: GuestActiveReservationsReadModel | GuestActiveReservationsReadModel[] | undefined = id
                 ? await db(tableName).withSchema('public').where({reservation_id: id}).first()
-                : await db(tableName).withSchema('public').select();
+                : email
+                    ? await db(tableName).withSchema('public').where({email}).select()
+                    : await db(tableName).withSchema('public').select();
 
             return res.status(200).json(data ?? (id ? null : []));
         } catch (err) {
