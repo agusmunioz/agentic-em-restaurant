@@ -1,0 +1,23 @@
+## Codebase Patterns
+- Routes are auto-discovered by `server.ts` via glob over `dist/src/slices/**/routes{,-*}.js` — never wire a new route manually anywhere.
+- Projections are NOT auto-discovered — a new `postgreSQLRawSQLProjection` must be imported and added to the `projections.inline([...])` array in `src/common/loadPostgresEventstore.ts` (a documented slice-scope exception file).
+- Each projection file defines its own local `getKnexInstance()` (a bare `knex({client:'pg'})` used only to build SQL text via `.toQuery()` for `sql(...)`) — this is separate from `src/common/db.ts`'s `getKnexInstance()`, which is a real connected instance used for executing queries (GET routes, or any command-handler lookup that needs to actually read from Postgres).
+- `npm run run:checks` checks ALL uncommitted changes (staged+unstaged+untracked) by default — stage only the intended slice files first, then run `node .build-kit/lib/check-commit-scope.cjs --staged` to verify before committing, otherwise unrelated pre-existing dirty files (dist/, other in-progress slice folders) will show as false violations.
+- `.build-kit/.slices/**` and `progress.txt`/`.build-kit/AGENTS.md` are local Ralph-loop bookkeeping only — prior slice commits (see git log) never included them. Keep updating them on disk but don't stage them into the slice commit (slice-scope check would reject them as out-of-scope files).
+- No merge commits in this repo's history — each slice is a single commit on a `feature/<slicename>` branch, fast-forward merged into `main`, then the feature branch is deleted.
+- Commands that operate on an existing entity by id put the id in the URL path (`/api/deleteemployee/:id`), body carries only the remaining fields.
+
+## [2026-09-21] - Cancel Reservation by Guest
+
+- Implemented state-change slice: guest cancels their own reservation by `reservation_id`, emitting `ReservationCancelledByGuest` (event type already existed in `TableReservationEvents.ts` and was already consumed by `GuestActiveReservationsProjection`, from earlier slice work — only the command side was missing).
+- Design problem: `PlaceReservation`'s stream is keyed by day (`table-reservation-${day}`), not by `reservation_id`, and the command only carries `reservation_id` (per slice.json — no `day` field, can't invent one). To route to the correct stream and still distinguish "not found" from "already cancelled" (both required by the board's specs) after cancellation, added a small dedicated lookup: `ReservationDayIndexProjection` (`reservation_day_index` table, `reservation_id -> day`, insert-only, never deleted on cancel) purely for internal command routing — not exposed via any read API. `handleCancelReservationByGuest` queries it via `src/common/db.ts`'s `getKnexInstance()` before loading the event stream.
+- Files changed:
+  - `migrations/V5__reservation_day_index.sql` (new table)
+  - `src/common/loadPostgresEventstore.ts` (registered `ReservationDayIndexProjection`)
+  - `src/slices/tablereservation/CancelReservationByGuest/{CancelReservationByGuestCommand.ts, ReservationDayIndexProjection.ts, CancelReservationByGuest.test.ts, routes.ts}`
+- All 3 board specifications implemented as `it(...)` blocks (DeciderSpecification): successful cancel, cancel-a-cancelled-reservation fails, cancel-a-non-existing-reservation fails.
+- `npm run build` and slice tests both pass (3/3).
+- **Learnings for future iterations:**
+  - When a command's slice.json fields don't carry enough info to resolve the physical event stream (because a sibling slice chose a stream key based on a different field), don't guess at inventing a request field — add an internal, never-exposed lookup projection scoped to the new slice's own folder instead. This stayed within slice-scope (new files only inside the slice folder, plus the two documented exception files) and didn't require touching the other slice's already-committed code.
+  - The two `Cancel Reservation` COMMAND nodes on the board (one in this slice, one in the separate, still-`Created`, employee-facing "Cancel Reservation" slice) share the exact same node title — used the *slice* title (not the node title) for the TypeScript command type name (`CancelReservationByGuest`) to avoid a type-name collision, per build-state-change's own guidance ("sliceName — the slice title — becomes the Command name").
+---

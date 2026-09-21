@@ -1,0 +1,378 @@
+{
+  "slices": [
+    {
+      "id": "f89661c5-3ef7-4b8f-be79-a5bf7dffd35d",
+      "slice": "Create Shift",
+      "index": 0,
+      "contextName": "default",
+      "contextSlug": "default",
+      "folder": "createshift",
+      "status": "Created",
+      "definition": {
+        "id": "f89661c5-3ef7-4b8f-be79-a5bf7dffd35d",
+        "title": "Create Shift",
+        "status": "Created"
+      }
+    },
+    {
+      "id": "996db638-bf92-4f65-9558-e653787af910",
+      "slice": "List All Active Shifts",
+      "index": 1,
+      "contextName": "default",
+      "contextSlug": "default",
+      "folder": "listallactiveshifts",
+      "status": "Created",
+      "definition": {
+        "id": "996db638-bf92-4f65-9558-e653787af910",
+        "title": "List All Active Shifts",
+        "status": "Created"
+      }
+    },
+    {
+      "id": "ccfd3578-c483-4b47-bc81-d856e31bdc37",
+      "slice": "Assign Shift",
+      "index": 2,
+      "contextName": "default",
+      "contextSlug": "default",
+      "folder": "assignshift",
+      "status": "Created",
+      "definition": {
+        "id": "ccfd3578-c483-4b47-bc81-d856e31bdc37",
+        "title": "Assign Shift",
+        "status": "Created"
+      }
+    },
+    {
+      "id": "ab8aac70-1027-4fa3-8043-cd7e85ef7cf1",
+      "slice": "Cancel Reservation",
+      "index": 3,
+      "contextName": "default",
+      "contextSlug": "default",
+      "folder": "cancelreservation",
+      "status": "Created",
+      "definition": {
+        "id": "ab8aac70-1027-4fa3-8043-cd7e85ef7cf1",
+        "title": "Cancel Reservation",
+        "status": "Created"
+      }
+    },
+    {
+      "id": "63bbc7fc-5f0f-4e29-95b6-21191dd472f7",
+      "slice": "Send Reservation  Notification",
+      "index": 4,
+      "contextName": "default",
+      "contextSlug": "default",
+      "folder": "sendreservationnotification",
+      "status": "Created",
+      "definition": {
+        "id": "63bbc7fc-5f0f-4e29-95b6-21191dd472f7",
+        "title": "Send Reservation  Notification",
+        "status": "Created"
+      }
+    },
+    {
+      "id": "01a6ee64-ad2a-407d-8c49-477d0234d1ea",
+      "slice": "Reservations To Notify",
+      "index": 5,
+      "contextName": "default",
+      "contextSlug": "default",
+      "folder": "reservationstonotify",
+      "status": "Created",
+      "definition": {
+        "id": "01a6ee64-ad2a-407d-8c49-477d0234d1ea",
+        "title": "Reservations To Notify",
+        "status": "Created"
+      }
+    },
+    {
+      "id": "39b2d706-3b4e-4bae-bf49-ff1afed011d0",
+      "slice": "Cancel Reservation by Guest",
+      "index": 6,
+      "contextName": "default",
+      "contextSlug": "default",
+      "folder": "cancelreservationbyguest",
+      "status": "Done",
+      "definition": {
+        "id": "39b2d706-3b4e-4bae-bf49-ff1afed011d0",
+        "title": "Cancel Reservation by Guest",
+        "status": "Done",
+        "sliceType": "STATE_CHANGE",
+        "commands": [
+          {
+            "id": "da52d7bc-fa3e-40b9-84a3-3ff06b1ebba3",
+            "title": "Cancel Reservation",
+            "fields": [
+              {
+                "name": "reservation_id",
+                "type": "UUID",
+                "optional": false,
+                "example": "1232-ASD-123"
+              }
+            ]
+          }
+        ],
+        "events": [
+          {
+            "id": "c780044d-b6f9-4fbd-8c61-e480af0b9dff",
+            "title": "Reservation Cancelled By Guest",
+            "fields": [
+              {
+                "name": "reservation_id",
+                "type": "UUID",
+                "optional": false,
+                "example": "1232-ASD-123"
+              }
+            ]
+          }
+        ],
+        "specifications": [
+          {
+            "title": "Successfully cancel a reservation",
+            "given": [
+              {
+                "title": "Reservation Placed",
+                "fields": {
+                  "reservation_id": "1232-ASD-123"
+                }
+              }
+            ],
+            "when": {
+              "title": "Cancel Reservation",
+              "fields": {
+                "reservation_id": "1232-ASD-123"
+              }
+            },
+            "then": [
+              {
+                "title": "Reservation Cancelled By Guest",
+                "fields": {
+                  "reservation_id": "1232-ASD-123"
+                }
+              }
+            ],
+            "expectError": false
+          },
+          {
+            "title": "Cancelling a cancelled reservation fails",
+            "given": [
+              {
+                "title": "Reservation Placed",
+                "fields": {
+                  "reservation_id": "1232-ASD-123"
+                }
+              },
+              {
+                "title": "Reservation Cancelled By Guest",
+                "fields": {
+                  "reservation_id": "1232-ASD-123"
+                }
+              }
+            ],
+            "when": {
+              "title": "Cancel Reservation",
+              "fields": {
+                "reservation_id": "1232-ASD-123"
+              }
+            },
+            "expectError": true,
+            "errorDescription": "Cancelling a canceled reservation is not allowed"
+          },
+          {
+            "title": "Cancelling a non existing reservation fails",
+            "given": [],
+            "when": {
+              "title": "Cancel Reservation",
+              "fields": {
+                "reservation_id": "non-existing"
+              }
+            },
+            "expectError": true,
+            "errorDescription": "Cannot cancel a non existing reservation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "4ad79e64-afa5-4a77-8e1e-07233294a7ea",
+      "slice": "Add Table",
+      "index": 7,
+      "contextName": "default",
+      "contextSlug": "default",
+      "folder": "addtable",
+      "status": "Done",
+      "definition": {
+        "id": "4ad79e64-afa5-4a77-8e1e-07233294a7ea",
+        "title": "Add Table",
+        "status": "Done"
+      }
+    },
+    {
+      "id": "e86eef39-d6e9-4da4-84bd-78e1007cd463",
+      "slice": "Add Vacation Period",
+      "index": 8,
+      "contextName": "default",
+      "contextSlug": "default",
+      "folder": "addvacationperiod",
+      "status": "Created",
+      "definition": {
+        "id": "e86eef39-d6e9-4da4-84bd-78e1007cd463",
+        "title": "Add Vacation Period",
+        "status": "Created"
+      }
+    },
+    {
+      "id": "50dd4571-aa30-4ad0-a6ad-f7b93f8ec1ad",
+      "slice": "List upcoming vacations",
+      "index": 9,
+      "contextName": "default",
+      "contextSlug": "default",
+      "folder": "listupcomingvacations",
+      "status": "Created",
+      "definition": {
+        "id": "50dd4571-aa30-4ad0-a6ad-f7b93f8ec1ad",
+        "title": "List upcoming vacations",
+        "status": "Created"
+      }
+    },
+    {
+      "id": "661127a3-e79d-4248-9741-990b2324a551",
+      "slice": "Cancel vacation",
+      "index": 10,
+      "contextName": "default",
+      "contextSlug": "default",
+      "folder": "cancelvacation",
+      "status": "Created",
+      "definition": {
+        "id": "661127a3-e79d-4248-9741-990b2324a551",
+        "title": "Cancel vacation",
+        "status": "Created"
+      }
+    },
+    {
+      "id": "bea2cc94-173f-41f2-8e77-f0dd673c5385",
+      "slice": "Place Reservation",
+      "index": 11,
+      "contextName": "default",
+      "contextSlug": "default",
+      "folder": "placereservation",
+      "status": "Done",
+      "definition": {
+        "id": "bea2cc94-173f-41f2-8e77-f0dd673c5385",
+        "title": "Place Reservation",
+        "status": "Done"
+      }
+    },
+    {
+      "id": "3ead07e4-f73a-4595-9f83-bc37b178b580",
+      "slice": "List Tables",
+      "index": 12,
+      "contextName": "default",
+      "contextSlug": "default",
+      "folder": "listtables",
+      "status": "Done",
+      "definition": {
+        "id": "3ead07e4-f73a-4595-9f83-bc37b178b580",
+        "title": "List Tables",
+        "status": "Done"
+      }
+    },
+    {
+      "id": "211e9e48-d46b-429d-8316-78dbac70c779",
+      "slice": "Assign table",
+      "index": 13,
+      "contextName": "default",
+      "contextSlug": "default",
+      "folder": "assigntable",
+      "status": "Created",
+      "definition": {
+        "id": "211e9e48-d46b-429d-8316-78dbac70c779",
+        "title": "Assign table",
+        "status": "Created"
+      }
+    },
+    {
+      "id": "e9ddbcd9-1c03-4001-a710-b2fbc659abb6",
+      "slice": "Guest Active Reservations",
+      "index": 14,
+      "contextName": "default",
+      "contextSlug": "default",
+      "folder": "guestactivereservations",
+      "status": "Done",
+      "definition": {
+        "id": "e9ddbcd9-1c03-4001-a710-b2fbc659abb6",
+        "title": "Guest Active Reservations",
+        "status": "Done"
+      }
+    },
+    {
+      "id": "d02c7351-1a4a-4f70-8661-a54345a8e958",
+      "slice": "Remove Table",
+      "index": 15,
+      "contextName": "default",
+      "contextSlug": "default",
+      "folder": "removetable",
+      "status": "Done",
+      "definition": {
+        "id": "d02c7351-1a4a-4f70-8661-a54345a8e958",
+        "title": "Remove Table",
+        "status": "Done"
+      }
+    },
+    {
+      "id": "bc538d68-88fe-4f68-afcc-87daf9f80c96",
+      "slice": "Update Table Seats",
+      "index": 16,
+      "contextName": "default",
+      "contextSlug": "default",
+      "folder": "updatetableseats",
+      "status": "Done",
+      "definition": {
+        "id": "bc538d68-88fe-4f68-afcc-87daf9f80c96",
+        "title": "Update Table Seats",
+        "status": "Done"
+      }
+    },
+    {
+      "id": "9224f56e-3eb0-499d-8e4a-c253b958beae",
+      "slice": "List Active Employees",
+      "index": 17,
+      "contextName": "default",
+      "contextSlug": "default",
+      "folder": "listactiveemployees",
+      "status": "Done",
+      "definition": {
+        "id": "9224f56e-3eb0-499d-8e4a-c253b958beae",
+        "title": "List Active Employees",
+        "status": "Done"
+      }
+    },
+    {
+      "id": "3f8aabf8-615f-4d3f-aa60-619268ebd6ef",
+      "slice": "Delete Employee",
+      "index": 18,
+      "contextName": "default",
+      "contextSlug": "default",
+      "folder": "deleteemployee",
+      "status": "Done",
+      "definition": {
+        "id": "3f8aabf8-615f-4d3f-aa60-619268ebd6ef",
+        "title": "Delete Employee",
+        "status": "Done"
+      }
+    },
+    {
+      "id": "b6e7c8d5-3a51-494c-9751-22ff16df7ebb",
+      "slice": "Create Employee",
+      "index": 19,
+      "contextName": "default",
+      "contextSlug": "default",
+      "folder": "createemployee",
+      "status": "Done",
+      "definition": {
+        "id": "b6e7c8d5-3a51-494c-9751-22ff16df7ebb",
+        "title": "Create Employee",
+        "status": "Done"
+      }
+    }
+  ]
+}

@@ -1,0 +1,100 @@
+{
+  "id": "39b2d706-3b4e-4bae-bf49-ff1afed011d0",
+  "title": "Cancel Reservation by Guest",
+  "status": "Done",
+  "sliceType": "STATE_CHANGE",
+  "assignee": "__agent__",
+  "commands": [
+    {
+      "id": "da52d7bc-fa3e-40b9-84a3-3ff06b1ebba3",
+      "title": "Cancel Reservation",
+      "fields": [
+        {
+          "name": "reservation_id",
+          "type": "UUID",
+          "optional": false,
+          "example": "1232-ASD-123"
+        }
+      ]
+    }
+  ],
+  "events": [
+    {
+      "id": "c780044d-b6f9-4fbd-8c61-e480af0b9dff",
+      "title": "Reservation Cancelled By Guest",
+      "fields": [
+        {
+          "name": "reservation_id",
+          "type": "UUID",
+          "optional": false,
+          "example": "1232-ASD-123"
+        }
+      ]
+    }
+  ],
+  "specifications": [
+    {
+      "title": "Successfully cancel a reservation",
+      "given": [
+        {
+          "title": "Reservation Placed",
+          "fields": {
+            "reservation_id": "1232-ASD-123"
+          }
+        }
+      ],
+      "when": {
+        "title": "Cancel Reservation",
+        "fields": {
+          "reservation_id": "1232-ASD-123"
+        }
+      },
+      "then": [
+        {
+          "title": "Reservation Cancelled By Guest",
+          "fields": {
+            "reservation_id": "1232-ASD-123"
+          }
+        }
+      ],
+      "expectError": false
+    },
+    {
+      "title": "Cancelling a cancelled reservation fails",
+      "given": [
+        {
+          "title": "Reservation Placed",
+          "fields": {
+            "reservation_id": "1232-ASD-123"
+          }
+        },
+        {
+          "title": "Reservation Cancelled By Guest",
+          "fields": {
+            "reservation_id": "1232-ASD-123"
+          }
+        }
+      ],
+      "when": {
+        "title": "Cancel Reservation",
+        "fields": {
+          "reservation_id": "1232-ASD-123"
+        }
+      },
+      "expectError": true,
+      "errorDescription": "Cancelling a canceled reservation is not allowed"
+    },
+    {
+      "title": "Cancelling a non existing reservation fails",
+      "given": [],
+      "when": {
+        "title": "Cancel Reservation",
+        "fields": {
+          "reservation_id": "non-existing"
+        }
+      },
+      "expectError": true,
+      "errorDescription": "Cannot cancel a non existing reservation"
+    }
+  ]
+}

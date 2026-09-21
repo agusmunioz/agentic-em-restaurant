@@ -15,6 +15,8 @@ const emmett_1 = require("@event-driven-io/emmett");
 const db_1 = require("./db");
 const ListTablesProjection_1 = require("../slices/tableconfiguration/ListTables/ListTablesProjection");
 const GuestActiveReservationsProjection_1 = require("../slices/tablereservation/GuestActiveReservations/GuestActiveReservationsProjection");
+const ActiveEmployeesProjection_1 = require("../slices/employeeonboarding/ListActiveEmployees/ActiveEmployeesProjection");
+const ReservationDayIndexProjection_1 = require("../slices/tablereservation/CancelReservationByGuest/ReservationDayIndexProjection");
 let eventStoreInstance = null;
 const findEventstore = () => __awaiter(void 0, void 0, void 0, function* () {
     if (!eventStoreInstance) {
@@ -29,6 +31,8 @@ const findEventstore = () => __awaiter(void 0, void 0, void 0, function* () {
             projections: emmett_1.projections.inline([
                 ListTablesProjection_1.ListTablesProjection,
                 GuestActiveReservationsProjection_1.GuestActiveReservationsProjection,
+                ActiveEmployeesProjection_1.ActiveEmployeesProjection,
+                ReservationDayIndexProjection_1.ReservationDayIndexProjection,
             ]),
         });
         yield eventStoreInstance.schema.migrate();
