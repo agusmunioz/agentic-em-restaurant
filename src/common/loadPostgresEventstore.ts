@@ -3,6 +3,7 @@ import {projections} from "@event-driven-io/emmett";
 import {postgresUrl, getSharedPool} from "./db";
 import {ListTablesProjection} from "../slices/tableconfiguration/ListTables/ListTablesProjection";
 import {GuestActiveReservationsProjection} from "../slices/tablereservation/GuestActiveReservations/GuestActiveReservationsProjection";
+import {ActiveEmployeesProjection} from "../slices/employeeonboarding/ListActiveEmployees/ActiveEmployeesProjection";
 
 let eventStoreInstance: ReturnType<typeof getPostgreSQLEventStore> | null = null;
 
@@ -19,6 +20,7 @@ export const findEventstore = async () => {
             projections: projections.inline([
                 ListTablesProjection,
                 GuestActiveReservationsProjection,
+                ActiveEmployeesProjection,
             ]),
         });
         await eventStoreInstance.schema.migrate();
