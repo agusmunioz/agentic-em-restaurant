@@ -1,0 +1,138 @@
+{
+  "id": "b6e7c8d5-3a51-494c-9751-22ff16df7ebb",
+  "title": "Create Employee",
+  "status": "Created",
+  "sliceType": "STATE_CHANGE",
+  "chapter": "Employee Onboarding",
+  "context": "Employee Onboarding",
+  "commands": [
+    {
+      "id": "c1a1a1a1-0001-4000-8000-000000000001",
+      "title": "Create Employee",
+      "type": "COMMAND",
+      "fields": [
+        { "name": "employee_first_name", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": false, "type": "String", "cardinality": "Single", "subfields": [] },
+        { "name": "employee_last_name", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": false, "type": "String", "cardinality": "Single", "subfields": [] },
+        { "name": "employee_role", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": false, "type": "String", "cardinality": "Single", "subfields": [] }
+      ],
+      "dependencies": [
+        { "id": "5dea93c3-7120-4502-a221-1d10121ca00c", "type": "INBOUND", "title": "Create Employee", "elementType": "HTML_SCREEN" },
+        { "id": "c1a1a1a1-0001-4000-8000-000000000002", "type": "OUTBOUND", "title": "Employee Created", "elementType": "EVENT" }
+      ],
+      "modelContext": "Employee Onboarding",
+      "lane": "Interaction",
+      "aggregate": "default",
+      "aggregateDependencies": [],
+      "triggers": [],
+      "tags": [],
+      "slice": "Create Employee",
+      "description": "",
+      "context": "INTERNAL",
+      "elementContext": "INTERNAL",
+      "listElement": false,
+      "todoList": false,
+      "createsAggregate": false,
+      "elementCopy": false,
+      "sketched": false,
+      "comments": []
+    }
+  ],
+  "events": [
+    {
+      "id": "c1a1a1a1-0001-4000-8000-000000000002",
+      "title": "Employee Created",
+      "type": "EVENT",
+      "fields": [
+        { "name": "employee_id", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": true, "edited": false, "idAttribute": true, "type": "UUID", "cardinality": "Single", "subfields": [] },
+        { "name": "employee_first_name", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": false, "type": "String", "cardinality": "Single", "subfields": [] },
+        { "name": "employee_last_name", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": false, "type": "String", "cardinality": "Single", "subfields": [] },
+        { "name": "employee_role", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": false, "type": "String", "cardinality": "Single", "subfields": [] }
+      ],
+      "dependencies": [
+        { "id": "1db8a96d-831c-475a-805b-279d0c81b2c6", "type": "OUTBOUND", "title": "Employees For Shifts", "elementType": "READMODEL" },
+        { "id": "c1a1a1a1-0001-4000-8000-000000000001", "type": "INBOUND", "title": "Create Employee", "elementType": "COMMAND" },
+        { "id": "c1a1a1a1-0001-4000-8000-000000000003", "type": "OUTBOUND", "title": "Active Employees", "elementType": "READMODEL" }
+      ],
+      "modelContext": "Employee Onboarding",
+      "lane": "Swimlane",
+      "aggregate": "default",
+      "aggregateDependencies": [],
+      "triggers": [],
+      "tags": [],
+      "slice": "Create Employee",
+      "description": "",
+      "context": "INTERNAL",
+      "elementContext": "INTERNAL",
+      "listElement": false,
+      "todoList": false,
+      "createsAggregate": false,
+      "elementCopy": false,
+      "sketched": false,
+      "comments": []
+    }
+  ],
+  "readmodels": [],
+  "screens": [
+    {
+      "id": "5dea93c3-7120-4502-a221-1d10121ca00c",
+      "title": "Create Employee",
+      "type": "HTML_SCREEN",
+      "fields": [
+        { "name": "employee_first_name", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": false, "type": "String", "cardinality": "Single", "subfields": [], "mapping": "Create Employee" },
+        { "name": "employee_last_name", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": false, "type": "String", "cardinality": "Single", "subfields": [], "mapping": "Create Employee" },
+        { "name": "employee_role", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": false, "type": "String", "cardinality": "Single", "subfields": [], "mapping": "Create Employee" }
+      ],
+      "dependencies": [
+        { "id": "c1a1a1a1-0001-4000-8000-000000000001", "type": "OUTBOUND", "title": "Create Employee", "elementType": "COMMAND" }
+      ],
+      "modelContext": "Employee Onboarding",
+      "lane": "Manager",
+      "aggregate": "default",
+      "aggregateDependencies": [],
+      "triggers": [],
+      "tags": [],
+      "slice": "Create Employee",
+      "description": "",
+      "context": "INTERNAL",
+      "elementContext": "INTERNAL",
+      "listElement": false,
+      "todoList": false,
+      "createsAggregate": false,
+      "elementCopy": false,
+      "sketched": false,
+      "comments": []
+    }
+  ],
+  "processors": [],
+  "tables": [],
+  "specifications": [
+    {
+      "id": "cf6bd781-bc40-4831-a58e-257e0526f968",
+      "title": "Manager creates a new employee",
+      "chapter": "Employee Onboarding",
+      "sliceName": "Create Employee",
+      "vertical": false,
+      "expectEmptyList": false,
+      "examples": [],
+      "given": [],
+      "when": [ { "id": "c1a1a1a1-0001-4000-8000-000000000001", "title": "Create Employee", "tags": [], "index": 0, "specRow": 0, "type": "COMMAND", "fields": [] } ],
+      "then": [ { "id": "c1a1a1a1-0001-4000-8000-000000000002", "title": "Employee Created", "tags": [], "index": 0, "specRow": 0, "type": "EVENT", "fields": [] } ]
+    },
+    {
+      "id": "cf0fab34-8c30-44f3-a728-779baaf80812",
+      "title": "Create employee fails without a first name",
+      "chapter": "Employee Onboarding",
+      "sliceName": "Create Employee",
+      "vertical": false,
+      "expectEmptyList": false,
+      "examples": [],
+      "given": [],
+      "when": [ { "id": "c1a1a1a1-0001-4000-8000-000000000001", "title": "Create Employee", "tags": [], "index": 0, "specRow": 0, "type": "COMMAND", "fields": [] } ],
+      "then": [ { "id": "927263a8-1e61-423a-984d-c3eb74269d7a", "title": "Create employee fails without a first name", "description": "First name is required", "type": "SPEC_ERROR", "fields": [] } ]
+    }
+  ],
+  "actors": [],
+  "aggregates": [],
+  "screenImages": [],
+  "comments": []
+}

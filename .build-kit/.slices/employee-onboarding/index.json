@@ -1,0 +1,49 @@
+{
+  "slices": [
+    {
+      "id": "b6e7c8d5-3a51-494c-9751-22ff16df7ebb",
+      "slice": "Create Employee",
+      "contextName": "Employee Onboarding",
+      "contextSlug": "employee-onboarding",
+      "folder": "createemployee",
+      "status": "Created",
+      "definition": {
+        "id": "b6e7c8d5-3a51-494c-9751-22ff16df7ebb",
+        "title": "Create Employee",
+        "status": "Created",
+        "sliceType": "STATE_CHANGE",
+        "contextName": "Employee Onboarding"
+      }
+    },
+    {
+      "id": "9224f56e-3eb0-499d-8e4a-c253b958beae",
+      "slice": "List Active Employees",
+      "contextName": "Employee Onboarding",
+      "contextSlug": "employee-onboarding",
+      "folder": "listactiveemployees",
+      "status": "Created",
+      "definition": {
+        "id": "9224f56e-3eb0-499d-8e4a-c253b958beae",
+        "title": "List Active Employees",
+        "status": "Created",
+        "sliceType": "STATE_VIEW",
+        "contextName": "Employee Onboarding"
+      }
+    },
+    {
+      "id": "3f8aabf8-615f-4d3f-aa60-619268ebd6ef",
+      "slice": "Delete Employee",
+      "contextName": "Employee Onboarding",
+      "contextSlug": "employee-onboarding",
+      "folder": "deleteemployee",
+      "status": "Created",
+      "definition": {
+        "id": "3f8aabf8-615f-4d3f-aa60-619268ebd6ef",
+        "title": "Delete Employee",
+        "status": "Created",
+        "sliceType": "STATE_CHANGE",
+        "contextName": "Employee Onboarding"
+      }
+    }
+  ]
+}

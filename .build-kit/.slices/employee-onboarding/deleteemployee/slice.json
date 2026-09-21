@@ -1,0 +1,148 @@
+{
+  "id": "3f8aabf8-615f-4d3f-aa60-619268ebd6ef",
+  "title": "Delete Employee",
+  "status": "Created",
+  "sliceType": "STATE_CHANGE",
+  "chapter": "Employee Onboarding",
+  "context": "Employee Onboarding",
+  "commands": [
+    {
+      "id": "c1a1a1a1-0001-4000-8000-000000000004",
+      "title": "Delete Employee",
+      "type": "COMMAND",
+      "fields": [
+        { "name": "employee_id", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": true, "type": "UUID", "cardinality": "Single", "subfields": [] }
+      ],
+      "dependencies": [
+        { "id": "c1a1a1a1-0001-4000-8000-000000000005", "type": "OUTBOUND", "title": "Employee Deleted", "elementType": "EVENT" },
+        { "id": "ad56a79d-9b01-4d2b-967b-24d8bce230df", "type": "INBOUND", "title": "Active Employees", "elementType": "HTML_SCREEN" }
+      ],
+      "modelContext": "Employee Onboarding",
+      "lane": "Interaction",
+      "aggregate": "default",
+      "aggregateDependencies": [],
+      "triggers": [],
+      "tags": [],
+      "slice": "Delete Employee",
+      "description": "",
+      "context": "INTERNAL",
+      "elementContext": "INTERNAL",
+      "listElement": false,
+      "todoList": false,
+      "createsAggregate": false,
+      "elementCopy": false,
+      "sketched": false,
+      "comments": []
+    }
+  ],
+  "events": [
+    {
+      "id": "c1a1a1a1-0001-4000-8000-000000000005",
+      "title": "Employee Deleted",
+      "type": "EVENT",
+      "fields": [
+        { "name": "employee_id", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": true, "type": "UUID", "cardinality": "Single", "subfields": [] }
+      ],
+      "dependencies": [
+        { "id": "c1a1a1a1-0001-4000-8000-000000000004", "type": "INBOUND", "title": "Delete Employee", "elementType": "COMMAND" }
+      ],
+      "modelContext": "Employee Onboarding",
+      "lane": "Swimlane",
+      "aggregate": "default",
+      "aggregateDependencies": [],
+      "triggers": [],
+      "tags": [],
+      "slice": "Delete Employee",
+      "description": "",
+      "context": "INTERNAL",
+      "elementContext": "INTERNAL",
+      "listElement": false,
+      "todoList": false,
+      "createsAggregate": false,
+      "elementCopy": false,
+      "sketched": false,
+      "comments": []
+    }
+  ],
+  "readmodels": [],
+  "screens": [
+    {
+      "id": "ad56a79d-9b01-4d2b-967b-24d8bce230df",
+      "title": "Active Employees",
+      "type": "HTML_SCREEN",
+      "fields": [
+        { "name": "employee_id", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": false, "type": "UUID", "cardinality": "Single", "subfields": [], "mapping": "Delete Employee" },
+        { "name": "employee_first_name", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": false, "type": "String", "cardinality": "Single", "subfields": [], "mapping": "Active Employees" },
+        { "name": "employee_last_name", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": false, "type": "String", "cardinality": "Single", "subfields": [], "mapping": "Active Employees" },
+        { "name": "employee_role", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": false, "type": "String", "cardinality": "Single", "subfields": [], "mapping": "Active Employees" }
+      ],
+      "dependencies": [
+        { "id": "c1a1a1a1-0001-4000-8000-000000000003", "type": "INBOUND", "title": "Active Employees", "elementType": "READMODEL" },
+        { "id": "c1a1a1a1-0001-4000-8000-000000000004", "type": "OUTBOUND", "title": "Delete Employee", "elementType": "COMMAND" }
+      ],
+      "modelContext": "Employee Onboarding",
+      "lane": "Manager",
+      "aggregate": "default",
+      "aggregateDependencies": [],
+      "triggers": [],
+      "tags": [],
+      "slice": "Delete Employee",
+      "description": "",
+      "context": "INTERNAL",
+      "elementContext": "INTERNAL",
+      "listElement": false,
+      "todoList": false,
+      "createsAggregate": false,
+      "elementCopy": false,
+      "sketched": false,
+      "comments": []
+    }
+  ],
+  "processors": [],
+  "tables": [],
+  "specifications": [
+    {
+      "id": "ad4f17e6-45ec-4159-953d-181482faea70",
+      "title": "Manager deletes an existing employee",
+      "chapter": "Employee Onboarding",
+      "sliceName": "Delete Employee",
+      "vertical": false,
+      "expectEmptyList": false,
+      "examples": [],
+      "given": [ { "id": "c1a1a1a1-0001-4000-8000-000000000002", "title": "Employee Created", "tags": [], "index": 0, "specRow": 0, "type": "EVENT", "fields": [] } ],
+      "when": [ { "id": "c1a1a1a1-0001-4000-8000-000000000004", "title": "Delete Employee", "tags": [], "index": 0, "specRow": 0, "type": "COMMAND", "fields": [] } ],
+      "then": [ { "id": "c1a1a1a1-0001-4000-8000-000000000005", "title": "Employee Deleted", "tags": [], "index": 0, "specRow": 0, "type": "EVENT", "fields": [] } ]
+    },
+    {
+      "id": "252fb9a8-4744-4b6e-940e-cd58d9e9f4d0",
+      "title": "Delete employee fails when already deleted",
+      "chapter": "Employee Onboarding",
+      "sliceName": "Delete Employee",
+      "vertical": false,
+      "expectEmptyList": false,
+      "examples": [],
+      "given": [
+        { "id": "c1a1a1a1-0001-4000-8000-000000000002", "title": "Employee Created", "tags": [], "index": 0, "specRow": 0, "type": "EVENT", "fields": [] },
+        { "id": "c1a1a1a1-0001-4000-8000-000000000005", "title": "Employee Deleted", "tags": [], "index": 0, "specRow": 0, "type": "EVENT", "fields": [] }
+      ],
+      "when": [ { "id": "c1a1a1a1-0001-4000-8000-000000000004", "title": "Delete Employee", "tags": [], "index": 0, "specRow": 0, "type": "COMMAND", "fields": [] } ],
+      "then": [ { "id": "638b915b-c5d6-4339-9efd-3db7e7ccf475", "title": "Delete employee fails when already deleted", "description": "Employee has already been deleted", "type": "SPEC_ERROR", "fields": [] } ]
+    },
+    {
+      "id": "d1e21d2b-31a8-400e-9d49-9e8602f0ecbf",
+      "title": "Delete employee fails without an employee id",
+      "chapter": "Employee Onboarding",
+      "sliceName": "Delete Employee",
+      "vertical": false,
+      "expectEmptyList": false,
+      "examples": [],
+      "given": [ { "id": "c1a1a1a1-0001-4000-8000-000000000002", "title": "Employee Created", "tags": [], "index": 0, "specRow": 0, "type": "EVENT", "fields": [] } ],
+      "when": [ { "id": "c1a1a1a1-0001-4000-8000-000000000004", "title": "Delete Employee", "tags": [], "index": 0, "specRow": 0, "type": "COMMAND", "fields": [] } ],
+      "then": [ { "id": "59657952-0697-4923-a10a-57c2384f9209", "title": "Delete employee fails without an employee id", "description": "employee_id is required", "type": "SPEC_ERROR", "fields": [] } ]
+    }
+  ],
+  "actors": [],
+  "aggregates": [],
+  "screenImages": [],
+  "comments": []
+}

@@ -1,0 +1,65 @@
+{
+  "id": "9224f56e-3eb0-499d-8e4a-c253b958beae",
+  "title": "List Active Employees",
+  "status": "Created",
+  "sliceType": "STATE_VIEW",
+  "chapter": "Employee Onboarding",
+  "context": "Employee Onboarding",
+  "commands": [],
+  "events": [],
+  "readmodels": [
+    {
+      "id": "c1a1a1a1-0001-4000-8000-000000000003",
+      "title": "Active Employees",
+      "type": "READMODEL",
+      "fields": [
+        { "name": "employee_id", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": true, "edited": false, "idAttribute": true, "type": "UUID", "cardinality": "Single", "subfields": [] },
+        { "name": "employee_first_name", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": false, "type": "String", "cardinality": "Single", "subfields": [] },
+        { "name": "employee_last_name", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": false, "type": "String", "cardinality": "Single", "subfields": [] },
+        { "name": "employee_role", "optional": false, "showAttributes": false, "technicalAttribute": false, "query": false, "generated": false, "edited": false, "idAttribute": false, "type": "String", "cardinality": "Single", "subfields": [] }
+      ],
+      "dependencies": [
+        { "id": "ee812b86-75c6-46f8-a444-a11ac44f7b13", "type": "OUTBOUND", "title": "Active Employees", "elementType": "HTML_SCREEN" },
+        { "id": "ad56a79d-9b01-4d2b-967b-24d8bce230df", "type": "OUTBOUND", "title": "Active Employees", "elementType": "HTML_SCREEN" },
+        { "id": "c1a1a1a1-0001-4000-8000-000000000002", "type": "INBOUND", "title": "Employee Created", "elementType": "EVENT" }
+      ],
+      "modelContext": "Employee Onboarding",
+      "lane": "Interaction",
+      "aggregate": "default",
+      "aggregateDependencies": [],
+      "triggers": [],
+      "tags": [],
+      "slice": "List Active Employees",
+      "description": "",
+      "context": "INTERNAL",
+      "elementContext": "INTERNAL",
+      "listElement": true,
+      "todoList": false,
+      "createsAggregate": false,
+      "elementCopy": false,
+      "sketched": false,
+      "comments": []
+    }
+  ],
+  "screens": [],
+  "processors": [],
+  "tables": [],
+  "specifications": [
+    {
+      "id": "5fc426a0-1ea2-424c-a472-eddb551ce70a",
+      "title": "Manager views the list of active employees",
+      "chapter": "Employee Onboarding",
+      "sliceName": "List Active Employees",
+      "vertical": false,
+      "expectEmptyList": false,
+      "examples": [],
+      "given": [ { "id": "c1a1a1a1-0001-4000-8000-000000000002", "title": "Employee Created", "tags": [], "index": 0, "specRow": 0, "type": "EVENT", "fields": [] } ],
+      "when": [ { "id": "q1a1a1a1-0001-4000-8000-000000000001", "title": "View Active Employees", "tags": [], "index": 0, "specRow": 0, "type": "QUERY", "fields": [] } ],
+      "then": [ { "id": "c1a1a1a1-0001-4000-8000-000000000003", "title": "Active Employees", "tags": [], "index": 0, "specRow": 0, "type": "READMODEL", "fields": [] } ]
+    }
+  ],
+  "actors": [],
+  "aggregates": [],
+  "screenImages": [],
+  "comments": []
+}
